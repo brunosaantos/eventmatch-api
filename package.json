@@ -1,0 +1,28 @@
+{
+  "name": "eventmatch-api",
+  "version": "1.0.0",
+  "description": "Eventmatch API",
+  "main": "api/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon api/server.js localhost 3030"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://187.7.106.14:7963/eventmatch/eventmatch-api.git"
+  },
+  "keywords": [
+    "eventmatch",
+    "api",
+    "cordova",
+    "ionic"
+  ],
+  "author": "Bruno Santos",
+  "license": "ISC",
+  "dependencies": {
+    "restify": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.1"
+  }
+}
