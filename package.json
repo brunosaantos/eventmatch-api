@@ -20,7 +20,10 @@
   "author": "Bruno Santos",
   "license": "ISC",
   "dependencies": {
-    "restify": "^4.0.4"
+    "lodash": "^4.11.2",
+    "mysql": "^2.10.2",
+    "restify": "^4.0.4",
+    "sequelize": "^3.22.0"
   },
   "devDependencies": {
     "nodemon": "^1.9.1"
