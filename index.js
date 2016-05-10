@@ -11,11 +11,22 @@ var server = restify.createServer({
 // Using bodyparser for POST Request Parameters
 server.use(restify.bodyParser());
 
-// Routes to Function Assaignment
+// CORS
+server.use((req,res,next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    return next();
+  }
+);
+
+// Routes to User
 server.get("/api/user/:id", api.user.getOne);
 server.get("/api/users", api.user.get);
 server.post("/api/users", api.user.post);
 server.del("/api/users/:id", api.user.del);
+
+// Routes to Login
+server.post("/api/login", api.login.post);
 
 // Creating Tables or Initiating Connections
 db

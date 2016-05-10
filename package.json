@@ -5,7 +5,7 @@
   "main": "api/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon api/server.js localhost 3030"
+    "start": "nodemon index.js localhost 3030"
   },
   "repository": {
     "type": "git",
