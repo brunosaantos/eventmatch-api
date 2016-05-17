@@ -20,6 +20,7 @@
   "author": "Bruno Santos",
   "license": "ISC",
   "dependencies": {
+    "is_js": "^0.8.0",
     "lodash": "^4.11.2",
     "mysql": "^2.10.2",
     "restify": "^4.0.4",

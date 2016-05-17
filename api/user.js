@@ -1,6 +1,7 @@
 "use strict";
 
-const db = require('../models');
+const db = require("../models");
+const is = require("is_js");
 
 // GET: /api/users
 exports.get = (req, res, next) => {
@@ -26,6 +27,10 @@ exports.getOne = (req, res, next) => {
 
 // POST: /api/users
 exports.post = (req, res, next) => {
+  if (is.not.date(req.body.birthdate)) {
+    req.body.birthdate = new Date(req.body.birthdate);
+  }
+
   db
     .users
     .create(req.body)
@@ -37,7 +42,8 @@ exports.post = (req, res, next) => {
           res.send(users);
           return next();
         });
-    });
+    })
+    .catch((err) => res.send(err.errors));
   
   return next();
 };

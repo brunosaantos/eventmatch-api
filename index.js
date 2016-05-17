@@ -23,7 +23,7 @@ server.use((req,res,next) => {
 server.get("/api/user/:id", api.user.getOne);
 server.get("/api/users", api.user.get);
 server.post("/api/users", api.user.post);
-server.del("/api/users/:id", api.user.del);
+server.del("/api/user/:id", api.user.del);
 
 // Routes to Login
 server.post("/api/login", api.login.post);
@@ -31,7 +31,7 @@ server.post("/api/login", api.login.post);
 // Creating Tables or Initiating Connections
 db
   .sequelize
-  .sync()
+  .sync({force: true})
   .then(function() {
     // Listening in 3030 Port
     server.listen(3030);
