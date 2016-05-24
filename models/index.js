@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-const fs        = require("fs");
-const path      = require("path");
-const Sequelize = require("sequelize");
-const lodash    = require("lodash");
+const fs        = require('fs');
+const path      = require('path');
+const Sequelize = require('sequelize');
+const lodash    = require('lodash');
 
 let db        = {};
-let sequelize = new Sequelize("eventmatch_dev", "root", null, {
-  host: "localhost",
-  dialect: "mysql"
+let sequelize = new Sequelize('eventmatch_dev', 'root', null, {
+  host: 'localhost',
+  dialect: 'mysql'
 })
 
 fs
@@ -17,7 +17,7 @@ fs
     return ((file.indexOf('.') !== 0) && (file !== 'index.js') && (file.slice(-3) === '.js'));
   })
   .forEach(function(file) {
-    var model = sequelize["import"](path.join(__dirname, file));
+    var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 

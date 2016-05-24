@@ -1,7 +1,8 @@
-"use strict";
+'use strict';
 
-const db = require("../models");
-const is = require("is_js");
+const db  = require('../models');
+const is  = require('is_js');
+const md5 = require('md5');
 
 // GET: /api/users
 exports.get = (req, res, next) => {
@@ -27,8 +28,12 @@ exports.getOne = (req, res, next) => {
 
 // POST: /api/users
 exports.post = (req, res, next) => {
-  if (is.not.date(req.body.birthdate)) {
+  if (req.body.birthdate && is.not.date(req.body.birthdate)) {
     req.body.birthdate = new Date(req.body.birthdate);
+  };
+
+  if (req.body.password) {
+    req.body.password = md5(req.body.password);
   }
 
   db

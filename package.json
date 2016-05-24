@@ -21,7 +21,10 @@
   "license": "ISC",
   "dependencies": {
     "is_js": "^0.8.0",
+    "jsonwebtoken": "^7.0.0",
     "lodash": "^4.11.2",
+    "md5": "^2.1.0",
+    "moment": "^2.13.0",
     "mysql": "^2.10.2",
     "restify": "^4.0.4",
     "sequelize": "^3.22.0"
