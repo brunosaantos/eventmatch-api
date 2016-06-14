@@ -29,6 +29,10 @@ server.post('/api/users', api.user.post);
 server.use(verifyToken);
 
 // Protected routes goes here:
+server.get('/api/verifyToken', function(req, res, next) {
+  res.send(true);
+  return next();
+});
 server.get('/api/user/:id', api.user.getOne);
 server.get('/api/users', api.user.get);
 server.del('/api/user/:id', api.user.del);

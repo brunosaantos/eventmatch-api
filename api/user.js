@@ -48,7 +48,7 @@ exports.post = (req, res, next) => {
           return next();
         });
     })
-    .catch((err) => res.send(err.errors));
+    .catch((err) => res.send(400, err.errors));
   
   return next();
 };
