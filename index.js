@@ -35,7 +35,9 @@ server.get('/api/verifyToken', function(req, res, next) {
 });
 server.get('/api/user/:id', api.user.getOne);
 server.get('/api/users', api.user.get);
+server.put('/api/user/:id', api.user.put);
 server.del('/api/user/:id', api.user.del);
+server.post('/api/user/:id/changePassword', api.user.changePassword);
 
 
 

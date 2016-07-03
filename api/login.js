@@ -19,17 +19,21 @@ exports.post = (req, res, next) => {
     })
     .then((user) => {
       if (!user) {
-        return next(new restify.UnauthorizedError('Invalid username or password'));
+        return next(new restify.UnauthorizedError('Nome de usuário e/ou senha invalidos'));
       };
 
+      // remove password from user object
+      delete user.dataValues['password'];
+
       let token = jwt.sign({
-        username: user.username
+        id: user.id
       }, config.secretToken, {
-        expiresIn: '24h'
+        expiresIn: '365 days'
       });
 
       res.send({
-        token : token
+        token : token,
+        user: user
       });
 
       return next();
