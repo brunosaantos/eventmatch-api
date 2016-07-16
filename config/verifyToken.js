@@ -28,4 +28,4 @@ module.exports = (req, res, next) => {
     return next(new restify.UnauthorizedError('No token provided'));
     
   }
-}
+};

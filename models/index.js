@@ -9,7 +9,7 @@ let db        = {};
 let sequelize = new Sequelize('eventmatch_dev', 'root', null, {
   host: 'localhost',
   dialect: 'mysql'
-})
+});
 
 fs
   .readdirSync(__dirname)

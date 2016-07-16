@@ -20,7 +20,7 @@ exports.post = (req, res, next) => {
     .then((user) => {
       if (!user) {
         return next(new restify.UnauthorizedError('Nome de usuário e/ou senha invalidos'));
-      };
+      }
 
       // remove password from user object
       delete user.dataValues['password'];
@@ -38,5 +38,5 @@ exports.post = (req, res, next) => {
 
       return next();
     })
-    .catch((err) => res.send({}));
+    .catch(() => res.send({}));
 };

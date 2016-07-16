@@ -1,23 +1,24 @@
 'use strict';
 
-const db  = require('../models');
-const is  = require('is_js');
-const md5 = require('md5');
+const db      = require('../models');
+const is      = require('is_js');
+const md5     = require('md5');
+const restify = require('restify');
 
 // GET: /api/users
 exports.get = (req, res, next) => {
-   db.users.findAll()
+  db.users.findAll()
     .then((users) => {
       res.send(users);
       return next();
     })
-    .catch((err) => res.send({}));
+    .catch(() => res.send({}));
    
 };
 
 // GET: /api/user/:id
 exports.getOne = (req, res, next) => {
-   db.users.find({where: {id:req.params.id}})
+  db.users.find({where: {id:req.params.id}})
     .then((user) => {
       // remove password from user object
       delete user.dataValues['password'];
@@ -25,7 +26,7 @@ exports.getOne = (req, res, next) => {
       res.send(user);
       return next();
     })
-    .catch((err) => res.send({}));
+    .catch(() => res.send({}));
    
 };
 
@@ -33,7 +34,7 @@ exports.getOne = (req, res, next) => {
 exports.post = (req, res, next) => {
   if (req.body.birthdate && is.not.date(req.body.birthdate)) {
     req.body.birthdate = new Date(req.body.birthdate);
-  };
+  }
 
   if (req.body.password) {
     req.body.password = md5(req.body.password);
@@ -42,7 +43,7 @@ exports.post = (req, res, next) => {
   db
     .users
     .create(req.body)
-    .then((user) => {
+    .then(() => {
       db
         .users
         .findAll()
@@ -60,7 +61,7 @@ exports.post = (req, res, next) => {
 exports.put = (req, res, next) => {
   if (req.body.birthdate && is.not.date(req.body.birthdate)) {
     req.body.birthdate = new Date(req.body.birthdate);
-  };
+  }
 
   if (req.body.password) {
     req.body.password = md5(req.body.password);
@@ -78,10 +79,10 @@ exports.put = (req, res, next) => {
 
           res.send(user);
           return next();
-        })
-    })
+        });
+    });
 
-}
+};
 
 // DELETE: /api/users/:id
 exports.del = (req, res, next) => {
@@ -92,7 +93,7 @@ exports.del = (req, res, next) => {
         id:req.params.id
       }
     })
-    .then((affectedRows) => {
+    .then(() => {
       db.users.findAll().then((users) => {
         res.send(users);
         return next();
@@ -111,13 +112,13 @@ exports.changePassword = (req, res, next) => {
 
       if(user.dataValues.password !== oldPassword) {
         return next(new restify.UnauthorizedError('Senha atual incorreta'));
-      };
+      }
 
       user
         .update({
           password: newPassword
         })
-        .then((users) => {
+        .then(() => {
           res.send({success: true});
           return next();
         });

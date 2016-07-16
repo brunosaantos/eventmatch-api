@@ -3,7 +3,6 @@
 const restify     = require('restify');
 const db          = require('./models');
 const api         = require('./api');
-const jwt         = require('jsonwebtoken');
 const verifyToken = require('./config/verifyToken');
 
 const server = restify.createServer({
@@ -15,11 +14,10 @@ server.use(restify.bodyParser());
 
 // CORS
 server.use((req,res,next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    return next();
-  }
-);
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  return next();
+});
 
 // Unprotected routes goes here:
 server.post('/api/login', api.login.post);
@@ -48,5 +46,4 @@ db
   .then(() => {
     // Listening in 3030 Port
     server.listen(3030);
-    console.log('Server started: http://localhost:3030/');
   });
