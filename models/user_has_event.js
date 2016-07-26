@@ -1,9 +1,12 @@
 'use strict';
 
-module.exports = (sequelize, DataTypes) => {
-  let UserEvents = sequelize.define('users_has_events', {
-    status: {
-      type: DataTypes.STRING
+module.exports = (sequelize) => {
+  const UserEvents = sequelize.define('users_has_events', {
+  }, {
+    classMethods: {
+      associate: (models) => {
+        UserEvents.belongsTo(models.roles);
+      }
     }
   });
   

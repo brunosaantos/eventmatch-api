@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  let User = sequelize.define('users', {
+  const User = sequelize.define('users', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -45,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
         isInt: true
+      }
+    }
+  }, {
+    classMethods: {
+      associate: (models) => {
+        User.hasMany(models.boards);
+        User.hasMany(models.polls);
+        User.hasMany(models.raffles, {as: 'Winner'});
       }
     }
   });

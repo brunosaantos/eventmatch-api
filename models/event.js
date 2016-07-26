@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  let Event = sequelize.define('events', {
+  const Event = sequelize.define('events', {
     name: {
       type: DataTypes.STRING
     },
@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         Event.belongsToMany(models.users, {through: 'users_has_events'});
+        Event.hasMany(models.polls);
       }
     }
   });

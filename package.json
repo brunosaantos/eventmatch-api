@@ -2,7 +2,7 @@
   "name": "eventmatch-api",
   "version": "1.0.0",
   "description": "Eventmatch API",
-  "main": "api/server.js",
+  "main": "index.js",
   "scripts": {
     "precommit": "npm run lint",
     "test": "echo \"Error: no test specified\" && exit 1",
