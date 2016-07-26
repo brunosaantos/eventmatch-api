@@ -42,7 +42,7 @@ server.post('/api/user/:id/changePassword', api.user.changePassword);
 // Creating Tables or Initiating Connections
 db
   .sequelize
-  .sync({force: true})
+  .sync({force: false})
   .then(() => {
     // Listening in 3030 Port
     server.listen(3030);
