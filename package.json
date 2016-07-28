@@ -22,10 +22,13 @@
   "author": "Bruno Santos",
   "license": "ISC",
   "dependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "is_js": "^0.8.0",
     "jsonwebtoken": "^7.0.0",
     "lodash": "^4.11.2",
     "md5": "^2.1.0",
+    "mocha": "^2.5.3",
     "moment": "^2.13.0",
     "mysql": "^2.10.2",
     "restify": "^4.0.4",
