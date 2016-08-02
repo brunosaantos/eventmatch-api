@@ -4,13 +4,13 @@ const db      = require('../models');
 
 // GET: /api/events(?embed=users)
 exports.get = (req, res, next) => {
-  const include = [];
+  let include = [];
 
   if (req.query.embed === 'users') {include.push(db.users);}
   
   db
     .events
-    .findAll({ include: include})
+    .findAll({ include: include })
     .then((events) => {
       res.send(events);
       return next();
@@ -37,21 +37,6 @@ exports.getOne = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-// GET: /api/events/:id/users
-exports.getOneUsers = (req, res, next) => {
-  db
-    .events
-    .find({ 
-      where: { id:req.params.id },
-      include: [ db.users ]
-    })
-    .then((event) => {      
-      res.send(event);
-      return next();
-    })
-    .catch(() => res.send({}));
-};
-
 // POST: /api/events
 exports.post = (req, res, next) => {
   db
@@ -69,6 +54,28 @@ exports.post = (req, res, next) => {
     .catch((err) => res.send(400, err.errors));
   
   return next();
+};
+
+// POST: /api/events/:id/users
+exports.registerUser = (req, res, next) => {
+  db
+    .users_has_events
+    .create({
+      eventId: 2,
+      userId: 1
+    })
+    .then(() => {
+      db
+        .users_has_events
+        .findAll({
+          where: { eventId: 2 }
+        })
+        .then((usersEvents) => {
+          res.send(usersEvents);
+          return next();
+        });
+    })
+    .catch((err) => res.send(400, err.errors));
 };
 
 // PUT: /api/events/:id
