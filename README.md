@@ -7,5 +7,5 @@ npm install
 
 ## Iniciar servidor
 ```sh
-npm run watch
+npm start
 ```

@@ -70,7 +70,7 @@ server.use(verifyToken);
 // Creating Tables or Initiating Connections
 db
   .sequelize
-  .sync({force: false})
+  .sync({force: true})
   .then(() => {
     // Listening in 3030 Port
     server.listen(3030);

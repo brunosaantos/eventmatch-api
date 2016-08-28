@@ -7,7 +7,7 @@ exports.get = (req, res, next) => {
   let include = [];
 
   if (req.query.embed === 'users') {include.push(db.users);}
-  
+
   db
     .events
     .findAll({ include: include })
@@ -20,10 +20,10 @@ exports.get = (req, res, next) => {
 
 // GET: /api/events/:id(?embed=users)
 exports.getOne = (req, res, next) => {
-  const include = [];
+  let include = [db.tickets];
 
   if (req.query.embed === 'users') {include.push(db.users);}
-  
+
   db
     .events
     .find({
@@ -39,20 +39,15 @@ exports.getOne = (req, res, next) => {
 
 // POST: /api/events
 exports.post = (req, res, next) => {
+
   db
     .events
-    .create(req.body)
-    .then(() => {
-      db
-        .events
-        .findAll()
-        .then((events) => {
-          res.send(events);
-          return next();
-        });
+    .create(req.body, {
+      include: db.tickets
     })
-    .catch((err) => res.send(400, err.errors));
-  
+    .then(event => res.send(201, event))
+    .catch(err => res.send(400, err.errors));
+
   return next();
 };
 
@@ -107,5 +102,5 @@ exports.del = (req, res, next) => {
         res.send(events);
         return next();
       });
-    }); 
+    });
 };

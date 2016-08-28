@@ -56,9 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         Event.belongsToMany(models.users, {through: 'users_has_events'});
         Event.hasMany(models.polls);
+        Event.hasMany(models.tickets);
       }
     }
   });
-    
+
   return Event;
 };
