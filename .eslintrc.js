@@ -21,5 +21,16 @@ module.exports = {
             "error",
             "always"
         ]
+    },
+    "globals": {
+      "describe": true,
+      "it": true,
+      "expect": true,
+      "app": true,
+      "td": true,
+      "beforeEach": true,
+      "request": true,
+      "Joi": true,
+      "joiAssert": true
     }
 };

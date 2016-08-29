@@ -75,3 +75,5 @@ db
     // Listening in 3030 Port
     server.listen(3030);
   });
+
+export default server;
