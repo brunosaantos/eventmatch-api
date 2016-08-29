@@ -5,6 +5,8 @@ const db          = require('./models');
 const api         = require('./api');
 const verifyToken = require('./config/verifyToken');
 
+// import seeds from './seeds';
+
 const server = restify.createServer({
   name: 'EventMatch'
 });
@@ -70,8 +72,9 @@ server.use(verifyToken);
 // Creating Tables or Initiating Connections
 db
   .sequelize
-  .sync({force: true})
+  .sync({force: false})
   .then(() => {
+    // seeds(db);
     // Listening in 3030 Port
     server.listen(3030);
   });
