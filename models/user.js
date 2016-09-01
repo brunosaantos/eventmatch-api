@@ -53,9 +53,10 @@ module.exports = (sequelize, DataTypes) => {
         User.hasMany(models.boards);
         User.hasMany(models.polls);
         User.hasMany(models.raffles, {as: 'Winner'});
+        User.belongsToMany(models.events, {through: models.users_has_events});
       }
     }
   });
-  
+
   return User;
 };

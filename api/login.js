@@ -26,14 +26,15 @@ exports.post = (req, res, next) => {
       delete user.dataValues['password'];
 
       let token = jwt.sign({
-        id: user.id
+        id: user.id,
+        username: user.username
       }, config.secretToken, {
         expiresIn: '365 days'
       });
 
       res.send({
-        token : token,
-        user: user
+        token,
+        user
       });
 
       return next();
