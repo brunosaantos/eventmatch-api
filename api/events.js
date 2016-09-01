@@ -45,7 +45,18 @@ exports.post = (req, res, next) => {
     .create(req.body, {
       include: db.tickets
     })
-    .then(event => res.send(201, event))
+    .then(event => {
+      // TODO: Refactor
+      if (req.body.admin) {
+        db.users_has_events
+        .create({
+          eventId: event.id,
+          userId: req.body.admin,
+          roleId: 1
+        });
+      }
+      return res.send(201, event);
+    })
     .catch(err => res.send(400, err.errors));
 
   return next();
@@ -56,14 +67,15 @@ exports.registerUser = (req, res, next) => {
   db
     .users_has_events
     .create({
-      eventId: 2,
-      userId: 1
+      eventId: 1,
+      userId: 1,
+      roleId: 1
     })
     .then(() => {
       db
         .users_has_events
         .findAll({
-          where: { eventId: 2 }
+          where: { eventId: 1 }
         })
         .then((usersEvents) => {
           res.send(usersEvents);
