@@ -54,8 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       validate: {
-        notEmpty: true,
-        isInt: true
+        notEmpty: true
       }
     }
   }, {
