@@ -47,6 +47,7 @@ server.post('/api/login', api.login.post);
 server.post('/api/users', api.user.post);
 
 // Verify JWT
+server.use(verifyToken);
 
 // Protected routes goes here:
 server.get('/api/verifyToken', function(req, res, next) {
@@ -67,7 +68,6 @@ server.post('/api/events/:id/users', api.events.registerUser);
 server.put('/api/events/:id', api.events.put);
 server.del('/api/events/:id', api.events.del);
 
-server.use(verifyToken);
 
 // Creating Tables or Initiating Connections
 db

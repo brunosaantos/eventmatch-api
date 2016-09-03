@@ -1,6 +1,10 @@
 'use strict';
 
+import moment from 'moment';
+
 const db      = require('../models');
+
+moment.locale('pt-br');
 
 // GET: /api/events(?embed=users)
 exports.get = (req, res, next) => {
@@ -12,6 +16,11 @@ exports.get = (req, res, next) => {
     .events
     .findAll({ include: include })
     .then((events) => {
+      events.map(event => {
+        if (event.dataValues.date) {
+          event.dataValues['dateCalendar'] = moment(event.dataValues.date).calendar();
+        }
+      });
       res.send(events);
       return next();
     })
@@ -31,6 +40,10 @@ exports.getOne = (req, res, next) => {
       include: include
     })
     .then((event) => {
+      if (event.dataValues.date) {
+        event.dataValues['dateCalendar'] = moment(event.dataValues.date).calendar();
+      }
+
       res.send(event);
       return next();
     })
