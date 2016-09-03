@@ -1,19 +1,28 @@
+import md5 from 'md5';
+
 describe('Users', () => {
   const Users = app.db.users;
   const defaultUser = {
     'id': 1,
     'username': 'admin',
-    'password': '123',
+    'password': md5('123'),
     'name': 'admin',
     'email': 'admin@admin.com',
     'birthdate': '01-01-2000',
     'gender': true
   };
 
+  let token = null;
+
   beforeEach(done => {
+
     Users
       .destroy({ where: {} })
       .then(() => Users.create(defaultUser))
+      .then(() => request.post('/api/login').send({username: 'admin', password: '123'}))
+      .then(res => {
+        token = res.body.token;
+      })
       .then(() => {
         done();
       });
@@ -23,6 +32,7 @@ describe('Users', () => {
     it('should return a list of users', done => {
       request
         .get('/api/users')
+        .set('x-access-token', token)
         .end((err, res) => {
           expect(res.body[0].id).to.be.eql(defaultUser.id);
           expect(res.body[0].username).to.be.eql(defaultUser.username);
@@ -40,6 +50,7 @@ describe('Users', () => {
     it('should return the user with id = 1', done => {
       request
         .get('/api/user/1')
+        .set('x-access-token', token)
         .end((err, res) => {
           expect(res.body.id).to.be.eql(defaultUser.id);
           expect(res.body.username).to.be.eql(defaultUser.username);
