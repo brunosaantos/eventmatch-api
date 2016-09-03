@@ -6,9 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {
-          msg: 'Por favor, informe o nome do evento'
-        },
         notEmpty: {
           msg: 'Por favor, informe o nome do evento'
         }
