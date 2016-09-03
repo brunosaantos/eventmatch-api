@@ -79,4 +79,7 @@ db
     server.listen(3030);
   });
 
-export default server;
+export default {
+  server,
+  db
+};
