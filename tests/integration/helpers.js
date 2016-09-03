@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import chai      from 'chai';
-import server    from '../../index';
+import app       from '../../index';
 
-global.server  = server;
-global.request = supertest(server);
+global.app     = app;
+global.request = supertest(app.server);
 global.expect  = chai.expect;
