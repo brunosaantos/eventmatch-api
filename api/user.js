@@ -9,11 +9,13 @@ const restify = require('restify');
 exports.get = (req, res, next) => {
   db.users.findAll()
     .then((users) => {
+      // remove password from user object
+      users.map(user => delete user.dataValues['password']);
       res.send(users);
       return next();
     })
     .catch(() => res.send({}));
-   
+
 };
 
 // GET: /api/user/:id
@@ -22,12 +24,12 @@ exports.getOne = (req, res, next) => {
     .then((user) => {
       // remove password from user object
       delete user.dataValues['password'];
-      
+
       res.send(user);
       return next();
     })
     .catch(() => res.send({}));
-   
+
 };
 
 // POST: /api/users
@@ -53,7 +55,7 @@ exports.post = (req, res, next) => {
         });
     })
     .catch((err) => res.send(400, err.errors));
-  
+
   return next();
 };
 
@@ -98,7 +100,7 @@ exports.del = (req, res, next) => {
         res.send(users);
         return next();
       });
-    }); 
+    });
 };
 
 // POST: /api/users/:id/changePassword
@@ -124,7 +126,6 @@ exports.changePassword = (req, res, next) => {
         });
     })
     .catch((err) => res.send(400, err.errors));
-  
+
   return next();
 };
-
