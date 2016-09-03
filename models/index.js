@@ -5,11 +5,18 @@ const path      = require('path');
 const Sequelize = require('sequelize');
 const lodash    = require('lodash');
 
+import datasource from '../config/datasource';
+
 let db        = {};
-let sequelize = new Sequelize('eventmatch_dev', 'root', null, {
-  host: 'localhost',
-  dialect: 'mysql'
-});
+let sequelize = new Sequelize(
+  datasource.database,
+  datasource.username,
+  datasource.password,
+  {
+    host: datasource.host,
+    dialect: datasource.dialect
+  }
+);
 
 fs
   .readdirSync(__dirname)
