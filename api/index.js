@@ -1,6 +1,6 @@
 'use strict';
 
-const fs  = require('fs');
+import fs from 'fs';
 const api = {};
 
 fs
@@ -12,4 +12,4 @@ fs
     api[name] = require('./' + name);
   });
 
-module.exports = api;
+export default api;

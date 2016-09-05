@@ -1,9 +1,9 @@
 'use strict';
 
-const restify     = require('restify');
+import restify     from 'restify';
+import api         from './api';
+import verifyToken from './config/verifyToken';
 const db          = require('./models');
-const api         = require('./api');
-const verifyToken = require('./config/verifyToken');
 
 // import devSeeds from './seeds/dev';
 

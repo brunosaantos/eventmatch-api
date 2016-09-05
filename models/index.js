@@ -38,3 +38,9 @@ module.exports = lodash.extend({
   sequelize: sequelize,
   Sequelize: Sequelize
 }, db);
+
+// export default {
+//   sequelize,
+//   Sequelize,
+//   db
+// };
