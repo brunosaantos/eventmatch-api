@@ -55,11 +55,11 @@ server.get('/api/verifyToken', function(req, res, next) {
   return next();
 });
 
-server.get('/api/user/:id', api.user.getOne);
 server.get('/api/users', api.user.get);
-server.put('/api/user/:id', api.user.put);
-server.del('/api/user/:id', api.user.del);
-server.post('/api/user/:id/changePassword', api.user.changePassword);
+server.get('/api/users/:id', api.user.getOne);
+server.put('/api/users/:id', api.user.put);
+server.del('/api/users/:id', api.user.del);
+server.post('/api/users/:id/changePassword', api.user.changePassword);
 
 server.get('/api/events', api.events.get);
 server.get('/api/events/:id', api.events.getOne);

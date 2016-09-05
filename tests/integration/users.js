@@ -5,7 +5,7 @@ describe('Users', () => {
   const defaultUser = {
     'id': 1,
     'username': 'admin',
-    'password': md5('123'),
+    'password': '123',
     'name': 'admin',
     'email': 'admin@admin.com',
     'birthdate': '01-01-2000',
@@ -15,11 +15,10 @@ describe('Users', () => {
   let token = null;
 
   beforeEach(done => {
-
     Users
       .destroy({ where: {} })
-      .then(() => Users.create(defaultUser))
-      .then(() => request.post('/api/login').send({username: 'admin', password: '123'}))
+      .then(() => Users.create(Object.assign({}, defaultUser, {password: md5(defaultUser.password)})))
+      .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
       .then(res => {
         token = res.body.token;
       })
@@ -28,7 +27,7 @@ describe('Users', () => {
       });
   });
 
-  describe('Route GET /users', () => {
+  describe('GET /users', () => {
     it('should return a list of users', done => {
       request
         .get('/api/users')
@@ -46,10 +45,10 @@ describe('Users', () => {
     });
   });
 
-  describe('Route GET /users/1', () => {
+  describe('GET /users/1', () => {
     it('should return the user with id = 1', done => {
       request
-        .get('/api/user/1')
+        .get('/api/users/1')
         .set('x-access-token', token)
         .end((err, res) => {
           expect(res.body.id).to.be.eql(defaultUser.id);
@@ -61,6 +60,69 @@ describe('Users', () => {
           expect(res.body.gender).to.be.eql(defaultUser.gender);
           done(err);
         });
+    });
+  });
+
+  describe('POST /api/users', () => {
+    it('should create a user', done => {
+      const user = {
+        'id': 2,
+        'username': 'bruno',
+        'password': '123',
+        'name': 'bruno',
+        'email': 'bruno@bruno.com',
+        'birthdate': '01-01-2000',
+        'gender': true
+      };
+
+      request
+        .post('/api/users')
+        .send(user)
+        .end((err, res) => {
+          expect(res.body.id).to.be.eql(user.id);
+          expect(res.body.username).to.be.eql(user.username);
+          expect(res.body.password).to.be.undefined;
+          expect(res.body.name).to.be.eql(user.name);
+          expect(res.body.email).to.be.eql(user.email);
+          expect(new Date(res.body.birthdate).toString()).to.be.eql(new Date(user.birthdate).toString());
+          expect(res.body.gender).to.be.eql(user.gender);
+          done(err);
+        });
+    });
+
+    describe('PUT /api/users/{id}', () => {
+      it('should update a user', done => {
+        const defaultUserUpdated = {
+          'id': 1,
+          'username': 'adminUpdated',
+          'password': '123',
+          'name': 'admin',
+          'email': 'admin@admin.com',
+          'birthdate': '01-01-2000',
+          'gender': true
+        };
+
+        request
+          .put('/api/users/1')
+          .set('x-access-token', token)
+          .send(defaultUserUpdated)
+          .end((err, res) => {
+            expect(res.body).to.be.eql([1]);
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /api/users/{id}', () => {
+      it('should delete a user', done => {
+        request
+          .delete('/api/users/1')
+          .set('x-access-token', token)
+          .end((err, res) => {
+            expect(res.statusCode).to.be.eql(204);
+            done(err);
+          });
+      });
     });
   });
 });
