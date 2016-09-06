@@ -14,12 +14,12 @@ export default (app) => {
   });
 
   app.put('/api/users/:id', (req, res) => {
-    usersController.put(req.body, req.params)
+    usersController.put(req.decoded, req.body, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 
   app.del('/api/users/:id', (req, res) => {
-    usersController.del(req.params)
+    usersController.del(req.decoded, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 

@@ -4,7 +4,7 @@ import restify     from 'restify';
 import config      from './config/config';
 import datasource  from './config/datasource';
 import CORS        from './config/cors';
-// import verifyToken from './config/verifyToken';
+import verifyToken from './config/verifyToken';
 
 import UnprotectedRouter from './routes/Unprotected';
 import UsersRouter       from './routes/users';
@@ -29,7 +29,7 @@ CORS(app);
 UnprotectedRouter(app);
 
 // Verify JWT
-// app.use(verifyToken);
+app.use(verifyToken);
 
 // Protected routes goes here:
 app.get('/api/verifyToken', function(req, res, next) {
