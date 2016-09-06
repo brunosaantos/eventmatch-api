@@ -8,6 +8,7 @@ import verifyToken from './config/verifyToken';
 
 import UnprotectedRouter from './routes/Unprotected';
 import UsersRouter       from './routes/users';
+import EventsRouter      from './routes/events';
 // import api         from './api';
 // const db          = require('./models');
 
@@ -37,23 +38,10 @@ app.get('/api/verifyToken', function(req, res, next) {
 });
 
 UsersRouter(app);
+EventsRouter(app);
+
 app.port = 3030;
 export default app;
-
-// app.get('/api/users', api.user.get);
-// app.get('/api/users/:id', api.user.getOne);
-// app.put('/api/users/:id', api.user.put);
-// app.del('/api/users/:id', api.user.del);
-// app.post('/api/users/:id/changePassword', api.user.changePassword);
-
-// app.get('/api/events', api.events.get);
-// app.get('/api/events/:id', api.events.getOne);
-// app.post('/api/events', api.events.post);
-// app.post('/api/events/:id/users', api.events.registerUser);
-// app.put('/api/events/:id', api.events.put);
-// app.del('/api/events/:id', api.events.del);
-
-
 
 // Creating Tables or Initiating Connections
 // db
