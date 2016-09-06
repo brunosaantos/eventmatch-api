@@ -1,4 +1,4 @@
-import UsersController from '../controllers/user';
+import UsersController from '../controllers/users';
 
 export default (app) => {
   const usersController = new UsersController(app.datasource.models.users);

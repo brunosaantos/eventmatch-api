@@ -1,4 +1,4 @@
-import UsersController from '../controllers/user';
+import UsersController from '../controllers/users';
 import LoginController from '../controllers/login';
 
 export default (app) => {
