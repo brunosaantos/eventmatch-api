@@ -21,12 +21,12 @@ export default (app) => {
   });
 
   app.put('/api/events/:id', (req, res) => {
-    eventsController.put(req.body, req.params)
+    eventsController.put(req.decoded, req.body, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 
   app.del('/api/events/:id', (req, res) => {
-    eventsController.del(req.params)
+    eventsController.del(req.decoded, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 };

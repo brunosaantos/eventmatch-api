@@ -1,242 +1,303 @@
-// import UsersController from '../../../controllers/users';
-//
-// describe('Users Controller', () => {
-//
-//   const decodedToken = {
-//     id: 1,
-//     username: 'admin',
-//     iat: 1473191712,
-//     exp: 1504727712
-//   };
-//
-//   const invalidDecodedToken = {
-//     id: 2,
-//     username: 'admin',
-//     iat: 1473191712,
-//     exp: 1504727712
-//   };
-//
-//   describe('Get all users: get()', () => {
-//     it('should return a list of users', () => {
-//       const Users = {
-//         findAll: td.function()
-//       };
-//
-//       const rawResponse = [{
-//         id: 1,
-//         username: 'admin',
-//         password: '123',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       }];
-//
-//       const expectedResponse = [{
-//         id: 1,
-//         username: 'admin',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       }];
-//
-//       td.when(Users.findAll({})).thenResolve(rawResponse);
-//
-//       const usersController = new UsersController(Users);
-//       return usersController.get()
-//         .then(response => expect(response.data).to.be.eql(expectedResponse));
-//     });
-//   });
-//
-//   describe('Get a user: getOne()', () => {
-//     it('should return a user', () => {
-//       const Users = {
-//         findOne: td.function()
-//       };
-//
-//       const rawResponse = {
-//         id: 1,
-//         username: 'admin',
-//         password: '123',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       const expectedResponse = {
-//         id: 1,
-//         username: 'admin',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       td.when(Users.findOne({where: {id: 1}})).thenResolve(rawResponse);
-//
-//       const usersController = new UsersController(Users);
-//       return usersController.getOne({id: 1})
-//         .then(response => expect(response.data).to.be.eql(expectedResponse));
-//     });
-//   });
-//
-//   describe('Create a user: post()', () => {
-//     it('should create a user', () => {
-//       const Users = {
-//         create: td.function()
-//       };
-//
-//       const postBody = {
-//         id: 1,
-//         username: 'admin',
-//         password: '123',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       const expectedResponse = {
-//         id: 1,
-//         username: 'admin',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       td.when(Users.create(postBody)).thenResolve(postBody);
-//
-//       const usersController = new UsersController(Users);
-//       return usersController.post(postBody)
-//         .then(response => {
-//           expect(response.data.id).to.be.eql(expectedResponse.id);
-//           expect(response.data.username).to.be.eql(expectedResponse.username);
-//           expect(response.data.password).to.be.undefined;
-//           expect(response.data.name).to.be.eql(expectedResponse.name);
-//           expect(response.data.email).to.be.eql(expectedResponse.email);
-//           expect(response.data.birthdate).to.be.eql(new Date(expectedResponse.birthdate));
-//           expect(response.data.gender).to.be.eql(expectedResponse.gender);
-//           expect(response.data.createdAt).to.be.eql(expectedResponse.createdAt);
-//           expect(response.data.updatedAt).to.be.eql(expectedResponse.updatedAt);
-//         });
-//     });
-//   });
-//
-//   describe('Update a user: put()', () => {
-//     it('should update a user', () => {
-//       const Users = {
-//         update: td.function()
-//       };
-//
-//       const postBody = {
-//         id: 1,
-//         username: 'admin updated',
-//         password: '123',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true
-//       };
-//
-//       const expectedResponse = {
-//         id: 1,
-//         username: 'admin updated',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       td.when(Users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
-//
-//       const usersController = new UsersController(Users);
-//       return usersController.put(decodedToken, postBody, {id: 1})
-//         .then(response => {
-//           expect(response.data).to.be.eql(expectedResponse);
-//         });
-//     });
-//
-//     it('should return a forbidden error', () => {
-//       const Users = {
-//         update: td.function()
-//       };
-//
-//       const postBody = {
-//         id: 1,
-//         username: 'admin updated',
-//         password: '123',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true
-//       };
-//
-//       const expectedResponse = {
-//         id: 1,
-//         username: 'admin updated',
-//         name: 'admin',
-//         email: 'admin@admin.com',
-//         birthdate: '2000-01-01T02:00:00.000Z',
-//         gender: true,
-//         createdAt: '2016-09-06T03:56:22.000Z',
-//         updatedAt: '2016-09-06T03:56:22.000Z'
-//       };
-//
-//       td.when(Users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
-//
-//       const usersController = new UsersController(Users);
-//       expect(usersController.put(invalidDecodedToken, postBody, {id: 1}).data).to.be.eql({error: 'Forbidden'});
-//       expect(usersController.put(invalidDecodedToken, postBody, {id: 1}).statusCode).to.be.eql(403);
-//     });
-//   });
-//
-//   describe('Delete a user: del()', () => {
-//     it('should delete a user', () => {
-//       const Users = {
-//         destroy: td.function()
-//       };
-//
-//       const expectedResponse = {};
-//
-//       td.when(Users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
-//
-//       const usersController = new UsersController(Users);
-//       return usersController.del(decodedToken, {id: 1})
-//         .then(response => {
-//           expect(response.data).to.be.eql(expectedResponse);
-//           expect(response.statusCode).to.be.eql(204);
-//         });
-//     });
-//
-//     it('should return a forbidden error', () => {
-//       const Users = {
-//         destroy: td.function()
-//       };
-//
-//       const expectedResponse = {};
-//
-//       td.when(Users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
-//
-//       const usersController = new UsersController(Users);
-//       expect(usersController.del(invalidDecodedToken, {id: 1}).data).to.be.eql({error: 'Forbidden'});
-//       expect(usersController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
-//     });
-//   });
-// });
+import moment           from 'moment';
+import EventsController from '../../../controllers/events';
+
+moment.locale('pt-br');
+
+describe('Events Controller', () => {
+
+  const decodedToken = {
+    id: 1,
+    username: 'admin',
+    iat: 1473191712,
+    exp: 1504727712
+  };
+
+  const invalidDecodedToken = {
+    id: 2,
+    username: 'admin',
+    iat: 1473191712,
+    exp: 1504727712
+  };
+
+  describe('Get all events: get()', () => {
+    it('should return a list of events', () => {
+      const Models = {
+        events: { findAll: td.function() },
+        users: { findAll: td.function() }
+      };
+
+      const rawResponse = [{
+        id: 1,
+        name: 'test event',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      }];
+
+      const expectedResponse = [{
+        id: 1,
+        name: 'test event',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        dateCalendar: moment('2016-07-07T00:00:00.000Z').calendar(),
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      }];
+
+      td.when(Models.events.findAll({include: []})).thenResolve(rawResponse);
+
+      const eventsController = new EventsController(Models);
+      return eventsController.get()
+        .then(response => expect(response.data).to.be.eql(expectedResponse));
+    });
+  });
+
+  describe('Get a event: getOne()', () => {
+    it('should return a event', () => {
+      const Models = {
+        events: { findOne: td.function() },
+        users: { findOne: td.function() }
+      };
+
+      const rawResponse = {
+        id: 1,
+        name: 'test event',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      const expectedResponse = {
+        id: 1,
+        name: 'test event',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        dateCalendar: moment('2016-07-07T00:00:00.000Z').calendar(),
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      td.when(Models.events.findOne({where: {id: 1}, include: []})).thenResolve(rawResponse);
+
+      const eventsController = new EventsController(Models);
+      return eventsController.getOne({id: 1})
+        .then(response => expect(response.data).to.be.eql(expectedResponse));
+    });
+  });
+
+  describe('Create an event: post()', () => {
+    it('should create an event', () => {
+      const Models = {
+        events: { create: td.function() },
+        users: { create: td.function() }
+      };
+
+      const postBody = {
+        id: 1,
+        name: 'event test',
+        date: '2016-07-07T00:00:00.000Z',
+        type: ''
+      };
+
+      const rawResponse = {
+        id: 1,
+        name: 'event test',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      const expectedResponse = {
+        id: 1,
+        name: 'event test',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        dateCalendar: moment('2016-07-07T00:00:00.000Z').calendar(),
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      td.when(Models.events.create(postBody)).thenResolve(rawResponse);
+
+      const eventsController = new EventsController(Models);
+      return eventsController.post(postBody)
+        .then(response => {
+          expect(response.data).to.be.eql(expectedResponse);
+          expect(response.statusCode).to.be.eql(201);
+        });
+    });
+  });
+
+  describe('Update an event: put()', () => {
+    it('should update an event', () => {
+      const Models = {
+        events: { update: td.function() },
+        users: { update: td.function() }
+      };
+
+      const postBody = {
+        id: 1,
+        name: 'event test updated',
+        date: '2016-07-07T00:00:00.000Z',
+        type: ''
+      };
+
+      const rawResponse = {
+        id: 1,
+        name: 'event test updated',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      const expectedResponse = {
+        id: 1,
+        name: 'event test updated',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        dateCalendar: moment('2016-07-07T00:00:00.000Z').calendar(),
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      td.when(Models.events.update(postBody, {where: {id: 1}})).thenResolve(rawResponse);
+
+      const eventsController = new EventsController(Models);
+      return eventsController.put(decodedToken, postBody, {id: 1})
+        .then(response => {
+          expect(response.data).to.be.eql(expectedResponse);
+        });
+    });
+
+    it('should return an forbidden error', () => {
+      const Models = {
+        events: { update: td.function() },
+        users: { update: td.function() }
+      };
+
+      const postBody = {
+        id: 1,
+        name: 'event test updated',
+        date: '2016-07-07T00:00:00.000Z',
+        type: ''
+      };
+
+      const rawResponse = {
+        id: 1,
+        name: 'event test updated',
+        address: null,
+        addressName: null,
+        date: '2016-07-07T00:00:00.000Z',
+        type: '',
+        price: null,
+        classification: null,
+        description: null,
+        lat: null,
+        lng: null,
+        createdAt: '2016-09-06T20:44:07.000Z',
+        updatedAt: '2016-09-06T20:44:07.000Z'
+      };
+
+      td.when(Models.events.update(postBody, {where: {id: 1}})).thenResolve(rawResponse);
+
+      const eventsController = new EventsController(Models);
+      expect(eventsController.put(invalidDecodedToken, postBody, {id: 1}).data).to.be.eql({error: 'Forbidden'});
+      expect(eventsController.put(invalidDecodedToken, postBody, {id: 1}).statusCode).to.be.eql(403);
+    });
+  });
+
+  describe('Delete an event: del()', () => {
+    it('should delete an event', () => {
+      const Models = {
+        events: { destroy: td.function() },
+        users: { destroy: td.function() }
+      };
+
+      const expectedResponse = {};
+
+      td.when(Models.events.destroy({where: {id: 1}})).thenResolve(expectedResponse);
+
+      const eventsController = new EventsController(Models);
+      return eventsController.del(decodedToken, {id: 1})
+        .then(response => {
+          expect(response.data).to.be.eql(expectedResponse);
+          expect(response.statusCode).to.be.eql(204);
+        });
+    });
+
+    it('should return an forbidden error', () => {
+      const Models = {
+        events: { destroy: td.function() },
+        users: { destroy: td.function() }
+      };
+
+      const expectedResponse = {};
+
+      td.when(Models.events.destroy({where: {id: 1}})).thenResolve(expectedResponse);
+
+      const eventsController = new EventsController(Models);
+      expect(eventsController.del(invalidDecodedToken, {id: 1}).data).to.be.eql({error: 'Forbidden'});
+      expect(eventsController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
+    });
+  });
+});

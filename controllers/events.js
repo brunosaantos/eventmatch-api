@@ -1,4 +1,6 @@
 'use strict';
+import moment from 'moment';
+moment.locale('pt-br');
 
 const defaultResponse = (data, statusCode = 200) => ({
   data,
@@ -20,7 +22,19 @@ class EventsController {
     if (embed == 'users') include.push(this.users);
 
     return this.events.findAll({include: include})
-      .then(events => defaultResponse(events))
+      .then(events => {
+        events.map(event => {
+          if (event.dataValues) {
+            event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
+          }
+
+          if (event.date) {
+            event.dateCalendar = moment(event.date).calendar();
+          }
+        });
+
+        return defaultResponse(events);
+      })
       .catch(error => errorResponse(error.message));
   }
 
@@ -29,23 +43,61 @@ class EventsController {
     if (embed == 'users') include.push(this.users);
 
     return this.events.findOne({where: {id: params.id}, include: include})
-      .then(event => defaultResponse(event))
+      .then(event => {
+        if (event.dataValues) {
+          event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
+        }
+
+        if (event.date) {
+          event.dateCalendar = moment(event.date).calendar();
+        }
+
+        return defaultResponse(event);
+      })
       .catch(error => errorResponse(error.message));
   }
 
   post (data) {
     return this.events.create(data)
-      .then(event => defaultResponse(event, 201))
+      .then(event => {
+        if (event.dataValues) {
+          event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
+        }
+
+        if (event.date) {
+          event.dateCalendar = moment(event.date).calendar();
+        }
+
+        return defaultResponse(event, 201);
+      })
       .catch(error => errorResponse(error.message, 422));
   }
 
-  put (data, params) {
+  put (decodedToken, data, params) {
+    if (decodedToken.id != params.id) {
+      return errorResponse('Forbidden', 403);
+    }
+
     return this.events.update(data, {where: {id: params.id}})
-      .then(event => defaultResponse(event))
+      .then(event => {
+        if (event.dataValues) {
+          event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
+        }
+
+        if (event.date) {
+          event.dateCalendar = moment(event.date).calendar();
+        }
+
+        return defaultResponse(event);
+      })
       .catch(error => errorResponse(error.message, 422));
   }
 
-  del (params) {
+  del (decodedToken, params) {
+    if (decodedToken.id != params.id) {
+      return errorResponse('Forbidden', 403);
+    }
+    
     return this.events
       .destroy({where: {id:params.id}})
       .then(result => defaultResponse(result, 204))
