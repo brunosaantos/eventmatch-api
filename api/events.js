@@ -2,7 +2,8 @@
 
 import moment from 'moment';
 
-const db      = require('../models');
+import app from '../app';
+let db = app.datasource.models;
 
 moment.locale('pt-br');
 

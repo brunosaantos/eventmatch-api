@@ -1,7 +1,7 @@
 'use strict';
 import restify from 'restify';
 import jwt     from 'jsonwebtoken';
-const config  = require('./config');
+import config  from './config';
 
 export default (req, res, next) => {
   // check header or url parameters or post parameters for token
