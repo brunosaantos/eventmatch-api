@@ -1,5 +1,5 @@
-import UsersController from '../api/user';
-import LoginController from '../api/login';
+import UsersController from '../controllers/user';
+import LoginController from '../controllers/login';
 
 export default (app) => {
   const loginController = new LoginController(app.datasource.models.users);

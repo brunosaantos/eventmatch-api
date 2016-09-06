@@ -1,4 +1,4 @@
-import EventsController from '../api/events';
+import EventsController from '../controllers/events';
 
 export default (app) => {
   const eventsController = new EventsController(app.datasource.models);

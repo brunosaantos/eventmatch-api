@@ -1,4 +1,4 @@
-import UsersController from '../api/user';
+import UsersController from '../controllers/user';
 
 export default (app) => {
   const usersController = new UsersController(app.datasource.models.users);
