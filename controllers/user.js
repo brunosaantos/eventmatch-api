@@ -20,9 +20,13 @@ class UsersController {
   }
 
   get () {
-    return this.Users.findAll()
+    return this.Users.findAll({})
       .then(users => {
-        users.map(user => delete user.dataValues['password']);
+        users.map(user => {
+          if (user.dataValues) {
+            delete user.dataValues.password;
+          }
+        });
         return defaultResponse(users);
       })
       .catch(error => errorResponse(error.message));
