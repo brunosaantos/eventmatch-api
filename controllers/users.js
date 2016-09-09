@@ -28,7 +28,7 @@ class UsersController {
         });
         return defaultResponse(users);
       })
-      .catch(error => errorResponse(error.message));
+      .catch(error => errorResponse(error.errors));
   }
 
   getOne (params) {
@@ -38,7 +38,7 @@ class UsersController {
         if (user.password) delete user.password;
         return defaultResponse(user);
       })
-      .catch(error => errorResponse(error.message));
+      .catch(error => errorResponse(error.errors));
   }
 
   post (data) {
@@ -58,7 +58,7 @@ class UsersController {
 
         return defaultResponse(user, 201);
       })
-      .catch(error => errorResponse(error.message, 422));
+      .catch(error => errorResponse(error.errors, 422));
   }
 
   put (decodedToken, data, params) {
@@ -77,7 +77,7 @@ class UsersController {
     return this.Users
       .update(data, {where: {id: params.id}})
       .then(user => defaultResponse(user))
-      .catch(error => errorResponse(error.message, 422));
+      .catch(error => errorResponse(error.errors, 422));
   }
 
   del (decodedToken, params) {
@@ -88,7 +88,7 @@ class UsersController {
     return this.Users
       .destroy({where: {id:params.id}})
       .then(result => defaultResponse(result, 204))
-      .catch(error => errorResponse(error.message, 404));
+      .catch(error => errorResponse(error.errors, 404));
   }
 
   changePassword (data, params, next) {
@@ -106,7 +106,7 @@ class UsersController {
           .update({password: newPassword})
           .then(user => defaultResponse(user));
       })
-      .catch(error => errorResponse(error.message, 400));
+      .catch(error => errorResponse(error.errors, 400));
   }
 }
 

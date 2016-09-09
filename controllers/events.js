@@ -35,7 +35,7 @@ class EventsController {
 
         return defaultResponse(events);
       })
-      .catch(error => errorResponse(error.message));
+      .catch(error => errorResponse(error.errors));
   }
 
   getOne (params, embed) {
@@ -54,7 +54,7 @@ class EventsController {
 
         return defaultResponse(event);
       })
-      .catch(error => errorResponse(error.message));
+      .catch(error => errorResponse(error.errors));
   }
 
   post (data) {
@@ -70,7 +70,7 @@ class EventsController {
 
         return defaultResponse(event, 201);
       })
-      .catch(error => errorResponse(error.message, 422));
+      .catch(error => errorResponse(error.errors, 422));
   }
 
   put (decodedToken, data, params) {
@@ -90,18 +90,18 @@ class EventsController {
 
         return defaultResponse(event);
       })
-      .catch(error => errorResponse(error.message, 422));
+      .catch(error => errorResponse(error.errors, 422));
   }
 
   del (decodedToken, params) {
     if (decodedToken.id != params.id) {
       return errorResponse('Forbidden', 403);
     }
-    
+
     return this.events
       .destroy({where: {id:params.id}})
       .then(result => defaultResponse(result, 204))
-      .catch(error => errorResponse(error.message, 404));
+      .catch(error => errorResponse(error.errors, 404));
   }
 }
 
