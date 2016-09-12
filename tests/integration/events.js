@@ -1,6 +1,8 @@
 import md5 from 'md5';
+import rolesSeed from '../../seeds/dev/roles';
 
 describe('Events', () => {
+  const Models = app.datasource.models;
   const Users = app.datasource.models.users;
   const Events = app.datasource.models.events;
 
@@ -23,6 +25,15 @@ describe('Events', () => {
 
   let token = null;
 
+  before(done => {
+    Models.roles
+      .destroy({ where: {} })
+      .then(() => rolesSeed(Models))
+        .then(() => {
+          done();
+        });
+  });
+
   beforeEach(done => {
     Users
       .destroy({ where: {} })
@@ -32,7 +43,10 @@ describe('Events', () => {
       .then(() => {
         Events
           .destroy({where: {}})
-          .then(() => Events.create(defaultEvent))
+          .then(() => {
+            return Events.create(defaultEvent)
+              .then(event => event.addUsers(1, {roleId: 1}));
+          })
           .then(() => {
             done();
           });
@@ -145,7 +159,49 @@ describe('Events', () => {
     });
   });
 
+  describe('GET /api/events/{id}/users', () => {
+    it('should return a list of users registered on the event', done => {
+      request
+        .get('/api/events/1/users')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          expect(res.body[0].name).to.be.eql(defaultUser.name);
+          done(err);
+        });
+    });
+  });
 
+  describe('POST /api/events/{id}/users', () => {
+    it('should register an user on the event', done => {
+      const user = {
+        'id': 2,
+        'username': 'bruno',
+        'password': '123',
+        'name': 'bruno',
+        'email': 'bruno@bruno.com',
+        'birthdate': '01-01-2000',
+        'gender': true
+      };
+
+      request
+        .post('/api/users')
+        .set('x-access-token', token)
+        .send(user)
+        .end(() => {
+          request
+          .post('/api/events/1/users')
+          .set('x-access-token', token)
+          .send({
+            userId: 2,
+            roleId: 2
+          })
+          .end((err, res) => {
+            expect(res.body[0][0].userId).to.be.eql(user.id);
+            done(err);
+          });
+        });
+    });
+  });
 
 
 });

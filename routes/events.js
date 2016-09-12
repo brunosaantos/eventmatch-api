@@ -29,4 +29,14 @@ export default (app) => {
     eventsController.del(req.decoded, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
+
+  app.get('/api/events/:id/users', (req, res) => {
+    eventsController.getRegistedUsers(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.post('/api/events/:id/users', (req, res) => {
+    eventsController.registerUser(req.body, req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
 };

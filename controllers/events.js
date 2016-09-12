@@ -103,6 +103,26 @@ class EventsController {
       .then(result => defaultResponse(result, 204))
       .catch(error => errorResponse(error.errors, 404));
   }
+
+  getRegistedUsers (params) {
+    return this.events
+      .findOne({where: {id: params.id}})
+      .then(event => {
+        return event.getUsers()
+          .then(users => defaultResponse(users));
+      })
+      .catch(error => errorResponse(error.errors));
+  }
+
+  registerUser (data, params) {
+    return this.events
+      .findOne({where: {id: params.id}})
+      .then(event => {
+        return event.addUsers(data.userId, {roleId: data.roleId})
+          .then(user => defaultResponse(user, 201));
+      })
+      .catch(error => errorResponse(error.errors));
+  }
 }
 
 export default EventsController;
