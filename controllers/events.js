@@ -17,11 +17,8 @@ class EventsController {
     this.users = Models.users;
   }
 
-  get (embed) {
-    let include = [];
-    if (embed == 'users') include.push(this.users);
-
-    return this.events.findAll({include: include})
+  get () {
+    return this.events.findAll({include: [{ all: true }]})
       .then(events => {
         events.map(event => {
           if (event.dataValues) {
@@ -38,11 +35,8 @@ class EventsController {
       .catch(error => errorResponse(error.errors));
   }
 
-  getOne (params, embed) {
-    let include = [];
-    if (embed == 'users') include.push(this.users);
-
-    return this.events.findOne({where: {id: params.id}, include: include})
+  getOne (params) {
+    return this.events.findOne({where: {id: params.id}, include: [{ all: true }]})
       .then(event => {
         if (event.dataValues) {
           event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();

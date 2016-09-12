@@ -4,14 +4,14 @@ export default (app) => {
   const eventsController = new EventsController(app.datasource.models);
 
   app.get('/api/events', (req, res) => {
-    eventsController.get(req.query.embed)
+    eventsController.get()
       .then(response => {
         res.json(response.statusCode, response.data);
       });
   });
 
   app.get('/api/events/:id', (req, res) => {
-    eventsController.getOne(req.params, req.query.embed)
+    eventsController.getOne(req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 

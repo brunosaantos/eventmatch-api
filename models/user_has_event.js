@@ -5,10 +5,10 @@ module.exports = (sequelize) => {
   }, {
     classMethods: {
       associate: (models) => {
-        UserEvents.belongsTo(models.roles);
+        UserEvents.hasOne(models.roles);
       }
     }
   });
-  
+
   return UserEvents;
 };

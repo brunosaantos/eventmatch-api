@@ -66,19 +66,6 @@ describe('Events', () => {
     });
   });
 
-  describe('GET /events?embed=users', () => {
-    it('should return a list of events with users', done => {
-      request
-        .get('/api/events?embed=users')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          expect(res.body[0].name).to.be.eql(defaultEvent.name);
-          expect(res.body[0]).to.include.keys('users');
-          done(err);
-        });
-    });
-  });
-
   describe('GET /events/1', () => {
     it('should return the event with id = 1', done => {
       request
@@ -87,20 +74,6 @@ describe('Events', () => {
         .end((err, res) => {
           expect(res.body.id).to.be.eql(defaultEvent.id);
           expect(res.body.name).to.be.eql(defaultEvent.name);
-          done(err);
-        });
-    });
-  });
-
-  describe('GET /events/1?embed=users', () => {
-    it('should return the event with id = 1 and include users', done => {
-      request
-        .get('/api/events/1?embed=users')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          expect(res.body.id).to.be.eql(defaultEvent.id);
-          expect(res.body.name).to.be.eql(defaultEvent.name);
-          expect(res.body).to.include.keys('users');
           done(err);
         });
     });

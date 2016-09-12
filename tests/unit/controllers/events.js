@@ -59,11 +59,13 @@ describe('Events Controller', () => {
         updatedAt: '2016-09-06T20:44:07.000Z'
       }];
 
-      td.when(Models.events.findAll({include: []})).thenResolve(rawResponse);
+      td.when(Models.events.findAll({include: [{ all: true }]})).thenResolve(rawResponse);
 
       const eventsController = new EventsController(Models);
       return eventsController.get()
-        .then(response => expect(response.data).to.be.eql(expectedResponse));
+        .then(response => {
+          expect(response.data).to.be.eql(expectedResponse);
+        });
     });
   });
 
@@ -107,7 +109,7 @@ describe('Events Controller', () => {
         updatedAt: '2016-09-06T20:44:07.000Z'
       };
 
-      td.when(Models.events.findOne({where: {id: 1}, include: []})).thenResolve(rawResponse);
+      td.when(Models.events.findOne({where: {id: 1}, include: [{ all: true }]})).thenResolve(rawResponse);
 
       const eventsController = new EventsController(Models);
       return eventsController.getOne({id: 1})
@@ -300,4 +302,21 @@ describe('Events Controller', () => {
       expect(eventsController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
     });
   });
+
+  // describe('Get User Role', () => {
+  //   it('should return the role of the user on the event', () => {
+  //     const Models = {
+  //       events: { destroy: td.function() },
+  //       users: { destroy: td.function() }
+  //     };
+  //
+  //     const expectedResponse = {};
+  //
+  //     td.when(Models.events.findUser({where: {id: 1}})).thenResolve(expectedResponse);
+  //
+  //     const eventsController = new EventsController(Models);
+  //     expect(eventsController.del(invalidDecodedToken, {id: 1}).data).to.be.eql({error: 'Forbidden'});
+  //     expect(eventsController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
+  //   });
+  // });
 });
