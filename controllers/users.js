@@ -46,10 +46,6 @@ class UsersController {
       data.birthdate = new Date(data.birthdate);
     }
 
-    // if (data.password) {
-    //   data.password = md5(data.password);
-    // }
-
     return this.Users
       .create(data)
       .then(user => {

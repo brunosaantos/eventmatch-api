@@ -51,7 +51,7 @@ class EventsController {
       .catch(error => errorResponse(error.errors));
   }
 
-  post (data) {
+  post (decodedToken, data) {
     return this.events.create(data)
       .then(event => {
         if (event.dataValues) {
@@ -62,9 +62,12 @@ class EventsController {
           event.dateCalendar = moment(event.date).calendar();
         }
 
-        return defaultResponse(event, 201);
+        // add creator to event as admin
+        return event.addUsers(decodedToken.id, {admin: true})
+          .then(() => defaultResponse(event, 201));
+
       })
-      .catch(error => errorResponse(error.errors, 422));
+      .catch(error => errorResponse(error, 422));
   }
 
   put (decodedToken, data, params) {

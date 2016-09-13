@@ -32,7 +32,7 @@ describe('Events', () => {
           .destroy({where: {}})
           .then(() => {
             return Events.create(defaultEvent)
-              .then(event => event.addUsers(1, {roleId: 1}));
+              .then(event => event.addUsers(1, {admin: true}));
           })
           .then(() => {
             done();

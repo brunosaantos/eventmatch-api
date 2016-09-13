@@ -16,7 +16,7 @@ export default (app) => {
   });
 
   app.post('/api/events', (req, res) => {
-    eventsController.post(req.body)
+    eventsController.post(req.decoded, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
 

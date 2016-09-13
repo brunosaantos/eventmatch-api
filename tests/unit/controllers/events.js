@@ -118,10 +118,9 @@ describe('Events Controller', () => {
   });
 
   describe('Create an event: post()', () => {
-    it('should create an event', () => {
+    it('should create an event and return the event with dateCalendar', () => {
       const Models = {
-        events: { create: td.function() },
-        users: { create: td.function() }
+        events: { create: td.function()}
       };
 
       const postBody = {
@@ -144,7 +143,8 @@ describe('Events Controller', () => {
         lat: null,
         lng: null,
         createdAt: '2016-09-06T20:44:07.000Z',
-        updatedAt: '2016-09-06T20:44:07.000Z'
+        updatedAt: '2016-09-06T20:44:07.000Z',
+        addUsers: td.function()
       };
 
       const expectedResponse = {
@@ -161,15 +161,18 @@ describe('Events Controller', () => {
         lat: null,
         lng: null,
         createdAt: '2016-09-06T20:44:07.000Z',
-        updatedAt: '2016-09-06T20:44:07.000Z'
+        updatedAt: '2016-09-06T20:44:07.000Z',
+        addUsers: td.function()
       };
 
       td.when(Models.events.create(postBody)).thenResolve(rawResponse);
+      td.when(rawResponse.addUsers(1, {admin: true})).thenResolve(rawResponse);
 
       const eventsController = new EventsController(Models);
-      return eventsController.post(postBody)
+      return eventsController.post(decodedToken, postBody)
         .then(response => {
-          expect(response.data).to.be.eql(expectedResponse);
+          expect(response.data.name).to.be.eql(expectedResponse.name);
+          expect(response.data.dateCalendar).to.be.eql(expectedResponse.dateCalendar);
           expect(response.statusCode).to.be.eql(201);
         });
     });
