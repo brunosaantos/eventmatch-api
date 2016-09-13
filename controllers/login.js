@@ -28,9 +28,9 @@ class LoginController {
     return this.Users
       .find({where: data})
       .then(user => {
-        // if (!user) {
-        //   return next(new restify.UnauthorizedError('Nome de usuário e/ou senha invalidos'));
-        // }
+        if (!user) {
+          return errorResponse('Nome de usuário e/ou senha inválidos', 404);
+        }
 
         // remove password from user object
         delete user.dataValues['password'];
