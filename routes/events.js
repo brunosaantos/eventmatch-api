@@ -36,7 +36,7 @@ export default (app) => {
   });
 
   app.post('/api/events/:id/users', (req, res) => {
-    eventsController.registerUser(req.body, req.params)
+    eventsController.registerUser(req.decoded, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 };

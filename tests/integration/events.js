@@ -1,8 +1,4 @@
-import md5 from 'md5';
-import rolesSeed from '../../seeds/dev/roles';
-
 describe('Events', () => {
-  const Models = app.datasource.models;
   const Users = app.datasource.models.users;
   const Events = app.datasource.models.events;
 
@@ -25,19 +21,10 @@ describe('Events', () => {
 
   let token = null;
 
-  before(done => {
-    Models.roles
-      .destroy({ where: {} })
-      .then(() => rolesSeed(Models))
-        .then(() => {
-          done();
-        });
-  });
-
   beforeEach(done => {
     Users
       .destroy({ where: {} })
-      .then(() => Users.create(Object.assign({}, defaultUser, {password: md5(defaultUser.password)})))
+      .then(() => Users.create(defaultUser))
       .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
       .then(res => token = res.body.token)
       .then(() => {
@@ -156,23 +143,28 @@ describe('Events', () => {
         'gender': true
       };
 
+      // create the user
       request
         .post('/api/users')
-        .set('x-access-token', token)
         .send(user)
-        .end(() => {
+        .then(user => {
+          // log the user to get the token
           request
-          .post('/api/events/1/users')
-          .set('x-access-token', token)
-          .send({
-            userId: 2,
-            roleId: 2
-          })
-          .end((err, res) => {
-            expect(res.body[0][0].userId).to.be.eql(user.id);
-            done(err);
-          });
+            .post('/api/login')
+            .send({username: user.username, password: user.password})
+            .then(res => {
+              // register the new user on the event
+              request
+                .post('/api/events/1/users')
+                .set('x-access-token', res.body.token)
+                .send()
+                .end((err, res) => {
+                  expect(res.statusCode).to.be.eql(201);
+                  done(err);
+                });
+            });
         });
+
     });
   });
 

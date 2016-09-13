@@ -103,17 +103,19 @@ class EventsController {
       .findOne({where: {id: params.id}})
       .then(event => {
         return event.getUsers()
-          .then(users => defaultResponse(users));
+          .then(users => defaultResponse(users))
+          .catch(error => errorResponse(error.errors));
       })
       .catch(error => errorResponse(error.errors));
   }
 
-  registerUser (data, params) {
+  registerUser (decodedToken, params) {
     return this.events
       .findOne({where: {id: params.id}})
       .then(event => {
-        return event.addUsers(data.userId, {roleId: data.roleId})
-          .then(user => defaultResponse(user, 201));
+        return event.addUsers(decodedToken.id)
+          .then(user => defaultResponse(user, 201))
+          .catch(error => errorResponse(error.errors));
       })
       .catch(error => errorResponse(error.errors));
   }

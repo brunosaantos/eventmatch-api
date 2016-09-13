@@ -302,21 +302,4 @@ describe('Events Controller', () => {
       expect(eventsController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
     });
   });
-
-  // describe('Get User Role', () => {
-  //   it('should return the role of the user on the event', () => {
-  //     const Models = {
-  //       events: { destroy: td.function() },
-  //       users: { destroy: td.function() }
-  //     };
-  //
-  //     const expectedResponse = {};
-  //
-  //     td.when(Models.events.findUser({where: {id: 1}})).thenResolve(expectedResponse);
-  //
-  //     const eventsController = new EventsController(Models);
-  //     expect(eventsController.del(invalidDecodedToken, {id: 1}).data).to.be.eql({error: 'Forbidden'});
-  //     expect(eventsController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
-  //   });
-  // });
 });

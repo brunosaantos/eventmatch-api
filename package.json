@@ -6,7 +6,7 @@
   "scripts": {
     "precommit": "npm run lint",
     "test": "npm run test-unit & npm run test-integration",
-    "test-integration": "SET NODE_ENV=test & mocha --opts tests/integration/mocha.opts tests/integration/*.js",
+    "test-integration": "SET NODE_ENV=test & mocha --opts tests/integration/mocha.opts tests/integration/events.js",
     "test-unit": "SET NODE_ENV=test & mocha --opts tests/unit/mocha.opts tests/unit/**/*.js",
     "start": "nodemon index.js localhost 3030 --exec babel-node",
     "lint": "eslint ."

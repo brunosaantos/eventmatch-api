@@ -17,7 +17,7 @@ describe('Users', () => {
   beforeEach(done => {
     Users
       .destroy({ where: {} })
-      .then(() => Users.create(Object.assign({}, defaultUser, {password: md5(defaultUser.password)})))
+      .then(() => Users.create(defaultUser))
       .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
       .then(res => {
         token = res.body.token;

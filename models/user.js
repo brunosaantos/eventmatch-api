@@ -1,4 +1,5 @@
 'use strict';
+import md5 from 'md5';
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('users', {
@@ -58,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
+    hooks: {
+      beforeCreate: user => user.set('password', md5(user.password))
+    }
+  },{
     classMethods: {
       associate: (models) => {
         User.hasMany(models.boards);

@@ -1,12 +1,10 @@
 'use strict';
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const UserEvents = sequelize.define('users_has_events', {
-  }, {
-    classMethods: {
-      associate: (models) => {
-        UserEvents.hasOne(models.roles);
-      }
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   });
 
