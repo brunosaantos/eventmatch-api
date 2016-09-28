@@ -20,6 +20,13 @@ export default (app) => {
       .then(response => res.json(response.statusCode, response.data));
   });
 
+  app.post('/api/events/search', (req, res) => {
+    eventsController.search(req.body)
+      .then(response => {
+        res.json(response.statusCode, response.data);
+      });
+  });
+
   app.put('/api/events/:id', (req, res) => {
     eventsController.put(req.decoded, req.body, req.params)
       .then(response => res.json(response.statusCode, response.data));

@@ -1,3 +1,5 @@
+import eventSeed from '../../seeds/events';
+
 describe('Events', () => {
   const Users = app.datasource.models.users;
   const Events = app.datasource.models.events;
@@ -49,6 +51,130 @@ describe('Events', () => {
         .end((err, res) => {
           expect(res.body[0].name).to.be.eql(defaultEvent.name);
           done(err);
+        });
+    });
+  });
+
+  describe('GET /events/search', () => {
+    it('should return a list of events with name = test event', done => {
+      const search = {
+        name: 'test event'
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              res.body.forEach(event => {
+                expect(event.name.toLowerCase()).to.contain(search.name);
+              });
+
+              expect(res.body.length).to.be.eql(3);
+              done(err);
+            });
+        });
+    });
+
+    it('should return a list of events with type = feira', done => {
+      const search = {
+        type: 'feira'
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              res.body.forEach(event => {
+                expect(event.type).to.be.eql(search.type);
+              });
+
+              expect(res.body.length).to.be.eql(2);
+              done(err);
+            });
+        });
+    });
+
+    it('should return a list of events with name = Fenadoce && (type = feira || type = outros)', done => {
+      const search = {
+        name: 'fenadoce',
+        type: ['feira', 'outros']
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              res.body.forEach(event => {
+                expect(event.name.toLowerCase()).to.contain(search.name);
+                expect(event.type).to.be.oneOf(search.type);
+              });
+
+              expect(res.body.length).to.be.eql(3);
+              done(err);
+            });
+        });
+    });
+
+    it('should return a list of events with date between 2016-09 and 2016-10', done => {
+      const search = {
+        date: ['2016-09-01 00:00:00', '2016-10-01 00:00:00']
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              expect(res.body.length).to.be.eql(2);
+              done(err);
+            });
+        });
+    });
+
+    it(`should return a list of events with
+      lat between -32.728781 and -30.383034 AND
+      lng between -53.383034 and -51.383034`, done => {
+      const search = {
+        lat: [-32.728781, -30.383034],
+        lng: [-53.383034, -51.383034]
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              expect(res.body.length).to.be.eql(2);
+              done(err);
+            });
         });
     });
   });

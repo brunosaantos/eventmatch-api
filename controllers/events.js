@@ -17,6 +17,46 @@ class EventsController {
     this.users = Models.users;
   }
 
+  search (data) {
+    const keys = Object.keys(data);
+    let where = {};
+
+    keys.forEach(key => {
+      if (!data[key]) return;
+
+      switch (key) {
+        case 'name':
+          where[key] = { $like: `%${data[key]}%` };
+          break;
+
+        case 'date':
+        case 'lat':
+        case 'lng':
+          where[key] = { $between: data[key]};
+          break;
+
+        default:
+          where[key] = data[key];
+      }
+    });
+
+    return this.events.findAll({ where: where })
+      .then(events => {
+        events.map(event => {
+          if (event.dataValues) {
+            event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
+          }
+
+          if (event.date) {
+            event.dateCalendar = moment(event.date).calendar();
+          }
+        });
+
+        return defaultResponse(events);
+      })
+      .catch(error => errorResponse(error.errors));
+  }
+
   get () {
     return this.events.findAll({include: [{ all: true }]})
       .then(events => {
