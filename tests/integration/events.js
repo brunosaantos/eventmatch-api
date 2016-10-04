@@ -67,9 +67,9 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({name: search.name})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               res.body.forEach(event => {
                 expect(event.name.toLowerCase()).to.contain(search.name);
@@ -92,9 +92,9 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({type: search.type})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               res.body.forEach(event => {
                 expect(event.type).to.be.eql(search.type);
@@ -118,9 +118,10 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({name: search.name})
+            .query({type: search.type})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               res.body.forEach(event => {
                 expect(event.name.toLowerCase()).to.contain(search.name);
@@ -144,9 +145,9 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({date: search.date})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               expect(res.body.length).to.be.eql(2);
               done(err);
@@ -168,9 +169,11 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({lat: search.lat})
+            .query({lng: search.lng})
+            .query({radius: search.radius})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               expect(res.body.length).to.be.eql(2);
               done(err);
@@ -191,9 +194,11 @@ describe('Events', () => {
           eventSeed(app.datasource.models);
 
           request
-            .post('/api/events/search')
+            .get('/api/events/search')
+            .query({lat: search.lat})
+            .query({lng: search.lng})
+            .query({radius: search.radius})
             .set('x-access-token', token)
-            .send(search)
             .end((err, res) => {
               expect(res.body.length).to.be.eql(0);
               done(err);

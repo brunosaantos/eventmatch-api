@@ -19,20 +19,20 @@ class EventsController {
     this.users = Models.users;
   }
 
-  search (data) {
-    const keys = Object.keys(data);
+  search (query) {
+    const keys = Object.keys(query);
     let where = {};
 
     keys.forEach(key => {
-      if (!data[key]) return;
+      if (!query[key]) return;
 
       switch (key) {
         case 'name':
-          where[key] = { $like: `%${data[key]}%` };
+          where[key] = { $like: `%${query[key]}%` };
           break;
 
         case 'date':
-          where[key] = { $between: data[key]};
+          where[key] = { $between: query[key]};
           break;
 
         case 'lat':
@@ -41,7 +41,7 @@ class EventsController {
           break;
 
         default:
-          where[key] = data[key];
+          where[key] = query[key];
       }
     });
 
@@ -59,16 +59,16 @@ class EventsController {
         });
 
 
-        if (data['lat'] && data['lng'] && data['radius']) {
+        if (query['lat'] && query['lng'] && query['radius']) {
           events = events.filter(event => {
             let eventCenter = {latitude: event['lat'], longitude: event['lng']};
-            let locationCenter = {latitude: data['lat'], longitude: data['lng']};
+            let locationCenter = {latitude: query['lat'], longitude: query['lng']};
 
             if (!eventCenter['latitude'] || !eventCenter['longitude']) {
               return false;
             }
 
-            return geolib.isPointInCircle(eventCenter, locationCenter, data['radius']);
+            return geolib.isPointInCircle(eventCenter, locationCenter, query['radius']);
           });
         }
 

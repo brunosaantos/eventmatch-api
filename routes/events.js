@@ -3,6 +3,13 @@ import EventsController from '../controllers/events';
 export default (app) => {
   const eventsController = new EventsController(app.datasource.models);
 
+  app.get('/api/events/search', (req, res) => {
+    eventsController.search(req.query)
+      .then(response => {
+        res.json(response.statusCode, response.data);
+      });
+  });
+
   app.get('/api/events', (req, res) => {
     eventsController.get()
       .then(response => {
@@ -18,13 +25,6 @@ export default (app) => {
   app.post('/api/events', (req, res) => {
     eventsController.post(req.decoded, req.body)
       .then(response => res.json(response.statusCode, response.data));
-  });
-
-  app.post('/api/events/search', (req, res) => {
-    eventsController.search(req.body)
-      .then(response => {
-        res.json(response.statusCode, response.data);
-      });
   });
 
   app.put('/api/events/:id', (req, res) => {
