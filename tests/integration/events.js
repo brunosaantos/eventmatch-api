@@ -154,12 +154,12 @@ describe('Events', () => {
         });
     });
 
-    it(`should return a list of events with
-      lat between -32.728781 and -30.383034 AND
-      lng between -53.383034 and -51.383034`, done => {
+    it(`should return a list of events inside a radius of 100km
+      starting on -31.765399, -52.337589`, done => {
       const search = {
-        lat: [-32.728781, -30.383034],
-        lng: [-53.383034, -51.383034]
+        lat: -31.765399,
+        lng: -52.337589,
+        radius: 100000
       };
 
       Events
@@ -173,6 +173,29 @@ describe('Events', () => {
             .send(search)
             .end((err, res) => {
               expect(res.body.length).to.be.eql(2);
+              done(err);
+            });
+        });
+    });
+
+    it('should not return any event', done => {
+      const search = {
+        lat: 51.507351,
+        lng: -0.127758,
+        radius: 100000
+      };
+
+      Events
+        .destroy({where: {}})
+        .then(() => {
+          eventSeed(app.datasource.models);
+
+          request
+            .post('/api/events/search')
+            .set('x-access-token', token)
+            .send(search)
+            .end((err, res) => {
+              expect(res.body.length).to.be.eql(0);
               done(err);
             });
         });

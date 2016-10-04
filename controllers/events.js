@@ -1,5 +1,7 @@
 'use strict';
 import moment from 'moment';
+import geolib from 'geolib';
+
 moment.locale('pt-br');
 
 const defaultResponse = (data, statusCode = 200) => ({
@@ -30,9 +32,12 @@ class EventsController {
           break;
 
         case 'date':
+          where[key] = { $between: data[key]};
+          break;
+
         case 'lat':
         case 'lng':
-          where[key] = { $between: data[key]};
+        case 'radius':
           break;
 
         default:
@@ -40,7 +45,8 @@ class EventsController {
       }
     });
 
-    return this.events.findAll({ where: where })
+
+    return this.events.findAll({ where: where, raw: true })
       .then(events => {
         events.map(event => {
           if (event.dataValues) {
@@ -51,6 +57,20 @@ class EventsController {
             event.dateCalendar = moment(event.date).calendar();
           }
         });
+
+
+        if (data['lat'] && data['lng'] && data['radius']) {
+          events = events.filter(event => {
+            let eventCenter = {latitude: event['lat'], longitude: event['lng']};
+            let locationCenter = {latitude: data['lat'], longitude: data['lng']};
+
+            if (!eventCenter['latitude'] || !eventCenter['longitude']) {
+              return false;
+            }
+
+            return geolib.isPointInCircle(eventCenter, locationCenter, data['radius']);
+          });
+        }
 
         return defaultResponse(events);
       })
