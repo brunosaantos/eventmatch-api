@@ -3,6 +3,7 @@ import eventSeed from '../../seeds/events';
 describe('Events', () => {
   const Users = app.datasource.models.users;
   const Events = app.datasource.models.events;
+  const Boards = app.datasource.models.boards;
 
   const defaultUser = {
     'id': 1,
@@ -21,6 +22,12 @@ describe('Events', () => {
     'type': ''
   };
 
+  const defaultBoard = {
+    'id': 1,
+    'content': 'Lorem ipsum dolor sit amet',
+    'eventId': 1
+  };
+
   let token = null;
 
   beforeEach(done => {
@@ -34,10 +41,15 @@ describe('Events', () => {
           .destroy({where: {}})
           .then(() => {
             return Events.create(defaultEvent)
-              .then(event => event.addUsers(1, {admin: true}));
+              .then(event => {
+                event.addUsers(1, {admin: true});
+              });
           })
           .then(() => {
-            done();
+            Boards
+              .destroy({where: {}})
+                .then(() => Boards.create(defaultBoard))
+                .then(() => done());
           });
       });
 
@@ -322,5 +334,36 @@ describe('Events', () => {
     });
   });
 
+  describe('GET /api/events/{id}/boards', () => {
+    it('should return a list of boards registered on the event', done => {
+      request
+        .get('/api/events/1/boards')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          expect(res.body[0].content).to.be.eql(defaultBoard.content);
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /api/events/{id}/boards', () => {
+    it('should register a board on the event', done => {
+      const board = {
+        'id': 2,
+        'content': 'The event second board'
+      };
+
+      request
+        .post('/api/events/1/boards')
+        .set('x-access-token', token)
+        .send(board)
+        .end((err, res) => {
+          expect(res.body.content).to.be.eql(board.content);
+          expect(res.statusCode).to.be.eql(201);
+          done(err);
+        });
+
+    });
+  });
 
 });

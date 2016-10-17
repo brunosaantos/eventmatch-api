@@ -46,4 +46,14 @@ export default (app) => {
     eventsController.registerUser(req.decoded, req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
+
+  app.get('/api/events/:id/boards', (req, res) => {
+    eventsController.getBoards(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.post('/api/events/:id/boards', (req, res) => {
+    eventsController.createBoard(req.decoded, req.params, req.body)
+      .then(response => res.json(response.statusCode, response.data));
+  });
 };

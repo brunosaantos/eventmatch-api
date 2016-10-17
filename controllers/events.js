@@ -182,6 +182,29 @@ class EventsController {
       })
       .catch(error => errorResponse(error.errors));
   }
+
+  getBoards (params) {
+    return this.events
+      .findOne({where: {id: params.id}})
+      .then(event => {
+        return event.getBoards()
+          .then(boards => defaultResponse(boards))
+          .catch(error => errorResponse(error.errors));
+      });
+  }
+
+  createBoard (decodedToken, params, data) {
+    data.userId = decodedToken.id;
+
+    return this.events
+      .findOne({where: {id: params.id}})
+      .then(event => {
+        return event.createBoard(data)
+          .then(board => defaultResponse(board, 201))
+          .catch(error => errorResponse(error.errors));
+      })
+      .catch(error => errorResponse(error.errors));
+  }
 }
 
 export default EventsController;
