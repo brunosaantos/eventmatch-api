@@ -5,7 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     content: {
       type: DataTypes.STRING
     }
+  }, {
+    classMethods: {
+      associate: (models) => {
+        BoardsReplies.belongsTo(models.users, {as: 'author'});
+        BoardsReplies.belongsTo(models.boards, {as: 'board'});
+      }
+    }
   });
-  
+
   return BoardsReplies;
 };

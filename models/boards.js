@@ -8,8 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
+        Boards.belongsTo(models.users);
         Boards.belongsTo(models.events);
-        Boards.hasMany(models.boards_replies);
+        Boards.hasMany(models.boards_replies, {as: 'reply'});
       }
     }
   });

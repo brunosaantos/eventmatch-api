@@ -56,4 +56,14 @@ export default (app) => {
     eventsController.createBoard(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
+
+  app.get('/api/events/:id/boards/:boardid/replies', (req, res) => {
+    eventsController.getBoardsReplies(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.post('/api/events/:id/boards/:boardid/replies', (req, res) => {
+    eventsController.createBoardReply(req.decoded, req.params, req.body)
+      .then(response => res.json(response.statusCode, response.data));
+  });
 };
