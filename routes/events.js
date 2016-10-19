@@ -1,7 +1,9 @@
 import EventsController from '../controllers/events';
+import BoardsController from '../controllers/boards';
 
 export default (app) => {
   const eventsController = new EventsController(app.datasource.models);
+  const boardsController = new BoardsController(app.datasource.models);
 
   app.get('/api/events/search', (req, res) => {
     eventsController.search(req.query)
@@ -48,22 +50,22 @@ export default (app) => {
   });
 
   app.get('/api/events/:id/boards', (req, res) => {
-    eventsController.getBoards(req.params)
+    boardsController.get(req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 
   app.post('/api/events/:id/boards', (req, res) => {
-    eventsController.createBoard(req.decoded, req.params, req.body)
+    boardsController.create(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
 
   app.get('/api/events/:id/boards/:boardid/replies', (req, res) => {
-    eventsController.getBoardsReplies(req.params)
+    boardsController.getReplies(req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 
   app.post('/api/events/:id/boards/:boardid/replies', (req, res) => {
-    eventsController.createBoardReply(req.decoded, req.params, req.body)
+    boardsController.createReply(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
 };
