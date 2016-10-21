@@ -75,7 +75,7 @@ describe('Polls', () => {
     });
   });
 
-  describe.only('POST /api/events/{id}/polls/', () => {
+  describe('POST /api/events/{id}/polls/', () => {
     it('should create poll and register to an event', done => {
       const poll = {
         'id': 2,
