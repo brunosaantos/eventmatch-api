@@ -6,9 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     votes: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   });
-  
+
   return Answers;
 };

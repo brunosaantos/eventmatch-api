@@ -1,9 +1,11 @@
 import EventsController from '../controllers/events';
 import BoardsController from '../controllers/boards';
+import PollsController  from '../controllers/polls';
 
 export default (app) => {
   const eventsController = new EventsController(app.datasource.models);
   const boardsController = new BoardsController(app.datasource.models);
+  const pollsController  = new PollsController(app.datasource.models);
 
   app.get('/api/events/search', (req, res) => {
     eventsController.search(req.query)
@@ -68,4 +70,15 @@ export default (app) => {
     boardsController.createReply(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
+
+  app.get('/api/events/:id/polls', (req, res) => {
+    pollsController.get(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.post('/api/events/:id/polls', (req, res) => {
+    pollsController.create(req.params, req.body)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
 };

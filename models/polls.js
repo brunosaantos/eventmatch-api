@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        Polls.hasMany(models.answers);
+        Polls.hasMany(models.answers, {as: { singular: 'answer', plural: 'answers'}});
       }
     }
   });
-  
+
   return Polls;
 };
