@@ -17,14 +17,14 @@ class BoardsController {
     return this.events
       .findOne({ where: { id: params.id } }, { include: [{model: this.users}]})
       .then(event => {
-        return event.getBoards()
+        return event.getBoards({ include: [ {all: true} ]})
           .then(boards => defaultResponse(boards))
           .catch(error => errorResponse(error.errors));
       });
   }
 
   create (decodedToken, params, data) {
-    data.userId = decodedToken.id;
+    data.authorId = decodedToken.id;
 
     return this.events
       .findOne({where: {id: params.id}})
@@ -40,7 +40,7 @@ class BoardsController {
     return this.boards
       .findOne({ where: { id: params.boardid } })
       .then(board => {
-        return board.getReply()
+        return board.getReply({ include: [ { all: true }] })
           .then(replies => defaultResponse(replies))
           .catch(error => errorResponse(error.errors));
       })

@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         User.hasMany(models.boards, {foreignKeyConstraint: true});
         User.hasMany(models.boards_replies, {foreignKeyConstraint: true});
-        User.hasMany(models.polls, {as: 'Creator'});
+        User.hasMany(models.polls);
         User.hasMany(models.raffles, {as: 'Winner'});
         User.belongsToMany(models.events, {through: models.users_has_events});
       }

@@ -25,12 +25,14 @@ describe('Boards', () => {
     'id': 1,
     'content': 'Lorem ipsum dolor sit amet',
     'eventId': 1,
-    'userId': 1
+    'authorId': 1
   };
 
   const defaultBoardReply = {
     'id': 1,
-    'content': 'Reply to: Lorem ipsum dolor sit amet'
+    'content': 'Reply to: Lorem ipsum dolor sit amet',
+    'boardId': 1,
+    'authorId': 1
   };
 
   let token = null;
@@ -60,10 +62,45 @@ describe('Boards', () => {
           .destroy({where: {}})
           .then(() => {
             return Boards.create(defaultBoard)
-            .then(board => board.createReply(defaultBoardReply));
+            .then(board => board.createReply(defaultBoardReply))
+            .then(() => done());
           });
-      })
-      .then(() => done());
+      });
+  });
+
+  describe('GET /api/events/{id}/boards/', () => {
+    it('should return a list of board registered on an event', done => {
+      request
+        .get('/api/events/1/boards')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          expect(res.body[0].content).to.be.eql(defaultBoard.content);
+          expect(res.body[0].author.username).to.be.eql(defaultUser.username);
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /api/events/{id}/boards', () => {
+    it('should register a board reply on an event', done => {
+      const board = {
+        'id': 2,
+        'content': 'The second board'
+      };
+
+      request
+        .post('/api/events/1/boards')
+        .set('x-access-token', token)
+        .send(board)
+        .end((err, res) => {
+          expect(res.body.content).to.be.eql(board.content);
+          expect(res.body.eventId).to.be.eql(defaultEvent.id);
+          expect(res.body.authorId).to.be.eql(defaultUser.id);
+          expect(res.statusCode).to.be.eql(201);
+          done(err);
+        });
+
+    });
   });
 
   describe('GET /api/events/{id}/boards/{id}/replies', () => {
@@ -73,6 +110,8 @@ describe('Boards', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           expect(res.body[0].content).to.be.eql(defaultBoardReply.content);
+          expect(res.body[0].board.content).to.be.eql(defaultBoard.content);
+          expect(res.body[0].author.username).to.be.eql(defaultUser.username);
           done(err);
         });
     });
