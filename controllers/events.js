@@ -18,6 +18,7 @@ class EventsController {
     this.events = Models.events;
     this.users = Models.users;
     this.boards = Models.boards;
+    this.tickets = Models.tickets;
   }
 
   search (query) {
@@ -113,7 +114,7 @@ class EventsController {
   }
 
   post (decodedToken, data) {
-    return this.events.create(data)
+    return this.events.create(data, { include: this.tickets })
       .then(event => {
         if (event.dataValues) {
           event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
