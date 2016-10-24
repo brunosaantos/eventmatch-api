@@ -62,13 +62,13 @@ export default (app) => {
     boardsController.create(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
-
-  app.get('/api/events/:id/boards/:boardid/replies', (req, res) => {
+  
+  app.get('/api/events/:id/boards/:boardId/replies', (req, res) => {
     boardsController.getReplies(req.params)
       .then(response => res.json(response.statusCode, response.data));
   });
 
-  app.post('/api/events/:id/boards/:boardid/replies', (req, res) => {
+  app.post('/api/events/:id/boards/:boardId/replies', (req, res) => {
     boardsController.createReply(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });

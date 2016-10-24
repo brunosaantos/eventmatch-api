@@ -38,7 +38,7 @@ class BoardsController {
 
   getReplies (params) {
     return this.boards
-      .findOne({ where: { id: params.boardid } })
+      .findOne({ where: { id: params.boardId } })
       .then(board => {
         return board.getReply({ include: [ { all: true }] })
           .then(replies => defaultResponse(replies))
@@ -51,7 +51,7 @@ class BoardsController {
     data.authorId = decodedToken.id;
 
     return this.boards
-      .findOne({where: {id: params.boardid}})
+      .findOne({where: {id: params.boardId}})
       .then(board => {
         return board.createReply(data)
           .then(boardReply => defaultResponse(boardReply, 201))
