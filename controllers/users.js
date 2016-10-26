@@ -15,8 +15,9 @@ const errorResponse = (message, statusCode = 400) => defaultResponse({
 }, statusCode);
 
 class UsersController {
-  constructor (Users) {
-    this.Users = Users;
+  constructor (Models) {
+    this.Users   = Models.users;
+    this.Friends = Models.friends;
   }
 
   get () {
@@ -103,6 +104,66 @@ class UsersController {
           .then(user => defaultResponse(user));
       })
       .catch(error => errorResponse(error.errors, 400));
+  }
+
+  addFriend(decodedToken, params, next) {
+    if (decodedToken.id == params.id) {
+      return next(new restify.UnauthorizedError('Você não pode adicionar você mesmo'));
+    }
+
+    const user1Id = Math.min(decodedToken.id, params.id);
+    const user2Id = Math.max(decodedToken.id, params.id);
+
+    return this.Friends
+      .findOne({where: {user1Id, user2Id}})
+        .then(friendship => {
+          if(!friendship) {
+            let data = {
+              user1Id,
+              user2Id,
+              status: 'pending',
+              actionUserId: decodedToken.id
+            };
+
+            return this.Friends
+              .create(data)
+              .then(newFriendship => defaultResponse(newFriendship, 201));
+          }
+
+          if (friendship.getDataValue('status') === 'accepted') {
+            // return next(new restify.UnauthorizedError('Esta amizade já existe'));
+            return errorResponse('Esta amizade já existe');
+          }
+
+          if (friendship.getDataValue('status') === 'pending') {
+            return friendship.update({
+              status: 'accepted',
+              actionUserId: decodedToken.id
+            })
+            .then(updatedFriendship => defaultResponse(updatedFriendship))
+            .catch(error => errorResponse(error.response, 422));
+          }
+
+          return false;
+        })
+        .catch(error => {
+          return errorResponse(error.errors, 422);
+        });
+
+    // return this.Users
+    //   .findOne({where: {id: user1Id}})
+    //   .then(user1 => {
+    //     return this.Users.findOne({where: {id: user2Id}})
+    //       .then(user2 => {
+    //
+    //       })
+    //       .catch(error => errorResponse(error.errors, 400));
+    //
+    //   })
+    //   .catch(error => errorResponse(error.errors, 400));
+
+
+
   }
 }
 

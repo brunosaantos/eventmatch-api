@@ -1,7 +1,7 @@
 import UsersController from '../controllers/users';
 
 export default (app) => {
-  const usersController = new UsersController(app.datasource.models.users);
+  const usersController = new UsersController(app.datasource.models);
 
   app.get('/api/users', (req, res) => {
     usersController.get()
@@ -25,6 +25,13 @@ export default (app) => {
 
   app.post('/api/users/:id/changePassword', (req, res) => {
     usersController.changePassword(req.body, req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+
+  // Friends
+  app.post('/api/users/:id/friends', (req, res, next) => {
+    usersController.addFriend(req.decoded, req.params, next)
       .then(response => res.json(response.statusCode, response.data));
   });
 };

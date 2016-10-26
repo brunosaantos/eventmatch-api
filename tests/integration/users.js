@@ -1,7 +1,8 @@
 import md5 from 'md5';
 
 describe('Users', () => {
-  const Users = app.datasource.models.users;
+  const Users   = app.datasource.models.users;
+  const Friends = app.datasource.models.friends;
   const defaultUser = {
     'id': 1,
     'username': 'admin',
@@ -89,58 +90,143 @@ describe('Users', () => {
           done(err);
         });
     });
+  });
 
-    describe('PUT /api/users/{id}', () => {
-      it('should update a user', done => {
-        const defaultUserUpdated = {
-          'id': 1,
-          'username': 'adminUpdated',
-          'password': '123',
-          'name': 'admin',
-          'email': 'admin@admin.com',
-          'birthdate': '01-01-2000',
-          'gender': true
-        };
-
-        request
-          .put('/api/users/1')
-          .set('x-access-token', token)
-          .send(defaultUserUpdated)
-          .end((err, res) => {
-            expect(res.body).to.be.eql([1]);
-            done(err);
-          });
-      });
-    });
-
-    describe('DELETE /api/users/{id}', () => {
-      it('should delete a user', done => {
-        request
-          .delete('/api/users/1')
-          .set('x-access-token', token)
-          .end((err, res) => {
-            expect(res.status).to.be.eql(204);
-            done(err);
-          });
-      });
-    });
-
-    describe('POST /api/users/{id}/changePassword', () => {
-      const passwords = {
-        old: defaultUser.password,
-        new: '1234'
+  describe('PUT /api/users/{id}', () => {
+    it('should update a user', done => {
+      const defaultUserUpdated = {
+        'id': 1,
+        'username': 'adminUpdated',
+        'password': '123',
+        'name': 'admin',
+        'email': 'admin@admin.com',
+        'birthdate': '01-01-2000',
+        'gender': true
       };
 
-      it('should change the user password', done => {
-        request
-          .post('/api/users/1/changePassword')
-          .set('x-access-token', token)
-          .send(passwords)
+      request
+        .put('/api/users/1')
+        .set('x-access-token', token)
+        .send(defaultUserUpdated)
+        .end((err, res) => {
+          expect(res.body).to.be.eql([1]);
+          done(err);
+        });
+    });
+  });
+
+  describe('DELETE /api/users/{id}', () => {
+    it('should delete a user', done => {
+      request
+        .delete('/api/users/1')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          expect(res.status).to.be.eql(204);
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /api/users/{id}/changePassword', () => {
+    const passwords = {
+      old: defaultUser.password,
+      new: '1234'
+    };
+
+    it('should change the user password', done => {
+      request
+        .post('/api/users/1/changePassword')
+        .set('x-access-token', token)
+        .send(passwords)
+        .end((err, res) => {
+          expect(res.body.password).to.be.eql(md5(passwords.new));
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /api/users/{id}/friends', () => {
+    const user2 = {
+      'id': 2,
+      'username': 'user2',
+      'password': '123',
+      'name': 'user2',
+      'email': 'user2@user2.com',
+      'birthdate': '01-01-2000',
+      'gender': true
+    };
+
+    it('should create a new friendship request and return status = "pending"', done => {
+      Users.create(user2)
+        .then(() => {
+          request
+            .post('/api/users/2/friends')
+            .set('x-access-token', token)
+            .end((err, res) => {
+              expect(res.body.user1Id).to.be.eql(defaultUser.id);
+              expect(res.body.user2Id).to.be.eql(user2.id);
+              expect(res.body.actionUserId).to.be.eql(defaultUser.id);
+              expect(res.body.status).to.be.eql('pending');
+              done(err);
+            });
+        });
+    });
+
+    it('should create a new friendship request and return status = "accepted"', done => {
+      let user2token;
+
+      Users.create(user2)
+        .then(() => request.post('/api/login').send({username: user2.username, password: user2.password}))
+        .then(res => {
+          user2token = res.body.token;
+        })
+        .then(() => {
+          return Friends.create({
+            user1Id: 1,
+            user2Id: 2,
+            status: 'pending',
+            actionUserId: 1
+          });
+        })
+        .then(() => {
+          request
+          .post('/api/users/1/friends')
+          .set('x-access-token', user2token)
           .end((err, res) => {
-            expect(res.body.password).to.be.eql(md5(passwords.new));
+            expect(res.body.user1Id).to.be.eql(defaultUser.id);
+            expect(res.body.user2Id).to.be.eql(user2.id);
+            expect(res.body.actionUserId).to.be.eql(user2.id);
+            expect(res.body.status).to.be.eql('accepted');
             done(err);
           });
-      });
+        });
+    });
+
+    it('should return an error because the friendship already exists', done => {
+      let user2token;
+
+      Users.create(user2)
+        .then(() => request.post('/api/login').send({username: user2.username, password: user2.password}))
+        .then(res => {
+          user2token = res.body.token;
+        })
+        .then(() => {
+          return Friends.create({
+            user1Id: 1,
+            user2Id: 2,
+            status: 'accepted',
+            actionUserId: 1
+          });
+        })
+        .then(() => {
+          request
+          .post('/api/users/1/friends')
+          .set('x-access-token', user2token)
+          .end((err, res) => {
+            expect(res.status).to.be.eql(400);
+            done(err);
+          });
+        });
     });
   });
 });

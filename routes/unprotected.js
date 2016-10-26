@@ -3,7 +3,7 @@ import LoginController from '../controllers/login';
 
 export default (app) => {
   const loginController = new LoginController(app.datasource.models.users);
-  const usersController = new UsersController(app.datasource.models.users);
+  const usersController = new UsersController(app.datasource.models);
 
   app.post('/api/login', (req, res) => {
     loginController.post(req.body)
