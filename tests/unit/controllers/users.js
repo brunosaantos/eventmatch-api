@@ -18,8 +18,8 @@ describe('Users Controller', () => {
 
   describe('Get all users: get()', () => {
     it('should return a list of users', () => {
-      const Users = {
-        findAll: td.function()
+      const Model = {
+        users: {findAll: td.function()}
       };
 
       const rawResponse = [{
@@ -45,9 +45,9 @@ describe('Users Controller', () => {
         updatedAt: '2016-09-06T03:56:22.000Z'
       }];
 
-      td.when(Users.findAll({})).thenResolve(rawResponse);
+      td.when(Model.users.findAll({})).thenResolve(rawResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       return usersController.get()
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
@@ -55,8 +55,8 @@ describe('Users Controller', () => {
 
   describe('Get a user: getOne()', () => {
     it('should return a user', () => {
-      const Users = {
-        findOne: td.function()
+      const Model = {
+        users: {findOne: td.function()}
       };
 
       const rawResponse = {
@@ -82,9 +82,9 @@ describe('Users Controller', () => {
         updatedAt: '2016-09-06T03:56:22.000Z'
       };
 
-      td.when(Users.findOne({where: {id: 1}})).thenResolve(rawResponse);
+      td.when(Model.users.findOne({where: {id: 1}})).thenResolve(rawResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       return usersController.getOne({id: 1})
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
@@ -92,8 +92,8 @@ describe('Users Controller', () => {
 
   describe('Create a user: post()', () => {
     it('should create a user', () => {
-      const Users = {
-        create: td.function()
+      const Model = {
+        users: {create: td.function()}
       };
 
       const postBody = {
@@ -119,9 +119,9 @@ describe('Users Controller', () => {
         updatedAt: '2016-09-06T03:56:22.000Z'
       };
 
-      td.when(Users.create(postBody)).thenResolve(postBody);
+      td.when(Model.users.create(postBody)).thenResolve(postBody);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       return usersController.post(postBody)
         .then(response => {
           expect(response.data.id).to.be.eql(expectedResponse.id);
@@ -139,8 +139,8 @@ describe('Users Controller', () => {
 
   describe('Update a user: put()', () => {
     it('should update a user', () => {
-      const Users = {
-        update: td.function()
+      const Model = {
+        users: {update: td.function()}
       };
 
       const postBody = {
@@ -164,9 +164,9 @@ describe('Users Controller', () => {
         updatedAt: '2016-09-06T03:56:22.000Z'
       };
 
-      td.when(Users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
+      td.when(Model.users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       return usersController.put(decodedToken, postBody, {id: 1})
         .then(response => {
           expect(response.data).to.be.eql(expectedResponse);
@@ -174,8 +174,8 @@ describe('Users Controller', () => {
     });
 
     it('should return a forbidden error', () => {
-      const Users = {
-        update: td.function()
+      const Model = {
+        users: {update: td.function()}
       };
 
       const postBody = {
@@ -199,9 +199,9 @@ describe('Users Controller', () => {
         updatedAt: '2016-09-06T03:56:22.000Z'
       };
 
-      td.when(Users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
+      td.when(Model.users.update(postBody, {where: {id: 1}})).thenResolve(expectedResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       expect(usersController.put(invalidDecodedToken, postBody, {id: 1}).data).to.be.eql({error: 'Forbidden'});
       expect(usersController.put(invalidDecodedToken, postBody, {id: 1}).statusCode).to.be.eql(403);
     });
@@ -209,15 +209,15 @@ describe('Users Controller', () => {
 
   describe('Delete a user: del()', () => {
     it('should delete a user', () => {
-      const Users = {
-        destroy: td.function()
+      const Model = {
+        users: {destroy: td.function()}
       };
 
       const expectedResponse = {};
 
-      td.when(Users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
+      td.when(Model.users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       return usersController.del(decodedToken, {id: 1})
         .then(response => {
           expect(response.data).to.be.eql(expectedResponse);
@@ -226,15 +226,15 @@ describe('Users Controller', () => {
     });
 
     it('should return a forbidden error', () => {
-      const Users = {
-        destroy: td.function()
+      const Model = {
+        users: {destroy: td.function()}
       };
 
       const expectedResponse = {};
 
-      td.when(Users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
+      td.when(Model.users.destroy({where: {id: 1}})).thenResolve(expectedResponse);
 
-      const usersController = new UsersController(Users);
+      const usersController = new UsersController(Model);
       expect(usersController.del(invalidDecodedToken, {id: 1}).data).to.be.eql({error: 'Forbidden'});
       expect(usersController.del(invalidDecodedToken, {id: 1}).statusCode).to.be.eql(403);
     });

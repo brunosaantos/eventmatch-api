@@ -120,7 +120,8 @@ describe('Events Controller', () => {
   describe('Create an event: post()', () => {
     it('should create an event and return the event with dateCalendar', () => {
       const Models = {
-        events: { create: td.function()}
+        events: { create: td.function()},
+        tickets: { create: td.function()}
       };
 
       const postBody = {
@@ -165,10 +166,12 @@ describe('Events Controller', () => {
         addUsers: td.function()
       };
 
-      td.when(Models.events.create(postBody)).thenResolve(rawResponse);
+      td.when(Models.events.create(postBody, { include: Models.tickets })).thenResolve(rawResponse);
       td.when(rawResponse.addUsers(1, {admin: true})).thenResolve(rawResponse);
 
       const eventsController = new EventsController(Models);
+
+
       return eventsController.post(decodedToken, postBody)
         .then(response => {
           expect(response.data.name).to.be.eql(expectedResponse.name);
