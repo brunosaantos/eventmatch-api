@@ -106,6 +106,16 @@ class UsersController {
       .catch(error => errorResponse(error.errors, 400));
   }
 
+  getFriendship(decodedToken, params) {
+    const user1Id = Math.min(decodedToken.id, params.id);
+    const user2Id = Math.max(decodedToken.id, params.id);
+
+    return this.Friends
+      .findOne({where: {user1Id, user2Id}})
+        .then(friendship => defaultResponse(friendship))
+        .catch(error => errorResponse(error));
+  }
+
   addFriend(decodedToken, params, next) {
     if (decodedToken.id == params.id) {
       return next(new restify.UnauthorizedError('Você não pode adicionar você mesmo'));

@@ -30,6 +30,11 @@ export default (app) => {
 
 
   // Friends
+  app.get('/api/users/:id/friends', (req, res, next) => {
+    usersController.getFriendship(req.decoded, req.params, next)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
   app.post('/api/users/:id/friends', (req, res, next) => {
     usersController.addFriend(req.decoded, req.params, next)
       .then(response => res.json(response.statusCode, response.data));
