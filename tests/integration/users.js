@@ -248,7 +248,7 @@
         actionUserId: 1
       };
 
-      it.only('should return friendship information', done => {
+      it('should return friendship information', done => {
         Users.create(user2)
           .then(() => {
             Friends.create(friendship)
