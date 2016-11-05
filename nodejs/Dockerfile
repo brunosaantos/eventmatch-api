@@ -11,7 +11,7 @@ RUN chown -R app:app $HOME/*
 
 USER app
 WORKDIR $HOME/api
-RUN npm cache clean && npm install --silent --progress=false
+RUN npm cache clean && npm install --production --silent --progress=false
 
 USER root
 COPY . $HOME/api
