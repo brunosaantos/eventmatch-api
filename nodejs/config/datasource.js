@@ -25,12 +25,13 @@ const loadModels = (sequelize) => {
 export default function (app) {
   if (!database) {
     const config = app.config;
+
     const sequelize = new Sequelize(
         config.database.database,
         config.database.username,
         config.database.password,
         config.database.params
-        );
+      );
 
     database = {
       sequelize,

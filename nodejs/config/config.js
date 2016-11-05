@@ -3,10 +3,12 @@ env = env.trim();
 
 export const database = {
   database: `eventmatch_${env}`,
-  username: 'root',
-  password: null,
-  host: 'localhost',
-  dialect: 'mysql'
+  username: 'bruno',
+  password: 'senac',
+  params: {
+    host: 'database',
+    dialect: 'mysql'
+  }
 };
 
 export const secretToken = 'secretToken';

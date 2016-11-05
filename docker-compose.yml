@@ -1,0 +1,35 @@
+version: '2'
+services:
+
+##### NODEJS ##################################################################################
+  nodejs:
+    links:
+      - database
+    build:
+      context: ./nodejs
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: dev
+    ports:
+      - 3030:3030
+    volumes:
+      - ./nodejs:/home/app/api
+      - /home/app/api/node_modules
+    networks:
+      - nodejs
+
+
+##### DATABASE ##################################################################################
+  database:
+    image: sameersbn/mysql
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    networks:
+      - nodejs
+    environment:
+      DB_NAME: eventmatch_dev
+      DB_PASS: senac
+      DB_USER: bruno
+
+networks:
+  nodejs:
