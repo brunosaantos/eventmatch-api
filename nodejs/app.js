@@ -6,7 +6,7 @@ import datasource  from './config/datasource';
 import CORS        from './config/cors';
 import verifyToken from './config/verifyToken';
 
-import UnprotectedRouter from './routes/Unprotected';
+import UnprotectedRouter from './routes/unprotected';
 import UsersRouter       from './routes/users';
 import EventsRouter      from './routes/events';
 // import api         from './api';
