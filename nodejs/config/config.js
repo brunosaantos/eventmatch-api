@@ -1,12 +1,16 @@
 let env = process.env.NODE_ENV || 'dev';
 env = env.trim();
 
+let username = (env == 'prod') ? 'bruno' : 'root';
+let password = (env == 'prod') ? 'senac' : '';
+let host = (env == 'prod') ? 'database' : 'localhost';
+
 export const database = {
   database: `eventmatch_${env}`,
-  username: 'bruno',
-  password: 'senac',
+  username,
+  password,
   params: {
-    host: 'database',
+    host,
     dialect: 'mysql'
   }
 };
