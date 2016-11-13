@@ -2,12 +2,14 @@ import EventsController  from '../controllers/events';
 import BoardsController  from '../controllers/boards';
 import PollsController   from '../controllers/polls';
 import TicketsController from '../controllers/tickets';
+import RafflesController from '../controllers/raffles';
 
 export default (app) => {
   const eventsController  = new EventsController(app.datasource.models);
   const boardsController  = new BoardsController(app.datasource.models);
   const pollsController   = new PollsController(app.datasource.models);
   const ticketsController = new TicketsController(app.datasource.models);
+  const rafflesController = new RafflesController(app.datasource);
 
   app.get('/api/events/search', (req, res) => {
     eventsController.search(req.query)
@@ -62,7 +64,7 @@ export default (app) => {
     boardsController.create(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
-  
+
   app.get('/api/events/:id/boards/:boardId/replies', (req, res) => {
     boardsController.getReplies(req.params)
       .then(response => res.json(response.statusCode, response.data));
@@ -90,6 +92,16 @@ export default (app) => {
 
   app.post('/api/events/:id/tickets', (req, res) => {
     ticketsController.create(req.decoded, req.params, req.body)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.get('/api/events/:id/raffles', (req, res) => {
+    rafflesController.get(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
+  app.post('/api/events/:id/raffles', (req, res) => {
+    rafflesController.create(req.decoded, req.params, req.body)
       .then(response => res.json(response.statusCode, response.data));
   });
 

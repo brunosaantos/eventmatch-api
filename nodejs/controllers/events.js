@@ -100,6 +100,7 @@ class EventsController {
   getOne (params) {
     return this.events.findOne({where: {id: params.id}, include: [{ all: true }]})
       .then(event => {
+        console.log('event');
         if (event.dataValues) {
           event.dataValues.dateCalendar = moment(event.dataValues.date).calendar();
         }
