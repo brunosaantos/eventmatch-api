@@ -85,6 +85,11 @@ export default (app) => {
       .then(response => res.json(response.statusCode, response.data));
   });
 
+  app.patch('/api/events/:id/polls/:pollId/answers/:answerId', (req, res) => {
+    pollsController.vote(req.params)
+      .then(response => res.json(response.statusCode, response.data));
+  });
+
   app.get('/api/events/:id/tickets', (req, res) => {
     ticketsController.get(req.params)
       .then(response => res.json(response.statusCode, response.data));

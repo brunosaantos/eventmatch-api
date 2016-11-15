@@ -36,6 +36,27 @@ class PollsController {
       })
       .catch(error => errorResponse(error.errors));
   }
+
+  vote (params) {
+    const eventId = params.id;
+    const pollId = params.pollId;
+    const answerId = params.answerId;
+
+    return this.events
+      .findOne({where: {id: eventId}})
+      .then(event => {
+        return event.getPolls({where: {id: pollId}})
+          .then(polls => polls[0].getAnswers({where: {id: answerId}}))
+          .then(answers => answers[0])
+          .then(answer => answer.increment('votes'))
+          .then(answer => answer.reload())
+          .then(answer => defaultResponse(answer, 201))
+          .catch(error => errorResponse(error.errors));
+      })
+      .catch(error => errorResponse(error.errors));
+  }
+
+
   //
   // getReplies (params) {
   //   return this.boards

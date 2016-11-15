@@ -26,10 +26,10 @@ describe('Polls', () => {
     'question': 'First question',
     'eventId': 1,
     'answers': [
-      { 'answer': 'First Answer' },
-      { 'answer': 'Second Answer' },
-      { 'answer': 'Third Answer' },
-      { 'answer': 'Fourth Answer' },
+      { 'id': 1, 'answer': 'First Answer' },
+      { 'id': 2, 'answer': 'Second Answer' },
+      { 'id': 3, 'answer': 'Third Answer' },
+      { 'id': 4, 'answer': 'Fourth Answer' },
     ]
   };
 
@@ -100,6 +100,18 @@ describe('Polls', () => {
           expect(res.body.answers[2].answer).to.be.eql(poll.answers[2].answer);
           expect(res.body.answers[3].answer).to.be.eql(poll.answers[3].answer);
           expect(res.body.answers[3].votes).to.be.eql(0);
+          done(err);
+        });
+    });
+  });
+
+  describe('PATCH /api/events/{id}/polls/{pollId}/answers/{answerId}', () => {
+    it('should increment the answer vote', done => {
+      request
+        .patch('/api/events/1/polls/1/answers/1')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          expect(res.body.votes).to.be.eql(1);
           done(err);
         });
     });
