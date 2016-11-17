@@ -18,7 +18,7 @@ class PollsController {
     return this.events
       .findOne({ where: { id: params.id } })
       .then(event => {
-        return event.getPolls()
+        return event.getPolls({ include: [{model: this.answers, as: 'answers' }] })
           .then(polls => defaultResponse(polls))
           .catch(error => errorResponse(error.errors));
       });
