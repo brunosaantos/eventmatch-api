@@ -105,16 +105,16 @@ describe('Polls', () => {
     });
   });
 
-  describe('PATCH /api/events/{id}/polls/{pollId}/answers/{answerId}', () => {
-    it('should increment the answer vote', done => {
-      request
-        .patch('/api/events/1/polls/1/answers/1')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          expect(res.body.votes).to.be.eql(1);
-          done(err);
-        });
-    });
-  });
+  // describe('PATCH /api/events/{id}/polls/{pollId}/answers/{answerId}', () => {
+  //   it('should increment the answer vote', done => {
+  //     request
+  //       .patch('/api/events/1/polls/1/answers/1')
+  //       .set('x-access-token', token)
+  //       .end((err, res) => {
+  //         expect(res.body.votes).to.be.eql(1);
+  //         done(err);
+  //       });
+  //   });
+  // });
 
 });
