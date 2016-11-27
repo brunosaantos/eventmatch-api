@@ -27,7 +27,7 @@ services:
     networks:
       - nodejs
     environment:
-      DB_NAME: eventmatch_dev
+      DB_NAME: eventmatch_prod
       DB_PASS: senac
       DB_USER: bruno
 
