@@ -5,14 +5,19 @@ import { ValidationError } from 'sequelize';
 module.exports = (sequelize, DataTypes) => {
   const validatePassword = user => {
     const pattern = new RegExp(/(?=.{6,})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*/g);
+    const errorMsg = 'A senha ter no mínimo 6 caracteres e deve conter letras maiúsculas e minúsculas, números e caracteres especiais';
 
     if (pattern.test(user.password)) {
       return user.set('password', md5(user.password));
     }
 
-    return sequelize.Promise.reject(new ValidationError(`A senha ter no mínimo 6 caracteres e
-      deve conter letras maiúsculas e minúsculas,
-      números e caracteres especiais`));
+    return sequelize.Promise.reject(new ValidationError(errorMsg, [
+      {
+        'message': errorMsg,
+        'type': 'Validation error',
+        'path': 'password'
+      }
+    ]));
   };
 
   const User = sequelize.define('users', {

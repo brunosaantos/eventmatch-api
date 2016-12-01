@@ -55,7 +55,10 @@ class UsersController {
 
         return defaultResponse(user, 201);
       })
-      .catch(error => errorResponse(error.errors, 422));
+      .catch(error => {
+        console.log(error);
+        return errorResponse(error.errors, 422);
+      });
   }
 
   put (decodedToken, data, params) {
