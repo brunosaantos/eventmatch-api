@@ -6,7 +6,7 @@ describe('Boards', () => {
   const defaultUser = {
     'id': 1,
     'username': 'admin',
-    'password': '123',
+    'password': 'S3nac@2016',
     'name': 'admin',
     'email': 'admin@admin.com',
     'birthdate': '01-01-2000',

@@ -6,7 +6,7 @@
     const defaultUser = {
       'id': 1,
       'username': 'admin',
-      'password': '123',
+      'password': 'S3nac@2016',
       'name': 'admin',
       'email': 'admin@admin.com',
       'birthdate': '01-01-2000',
@@ -69,7 +69,7 @@
         const user = {
           'id': 2,
           'username': 'bruno',
-          'password': '123',
+          'password': 'S3nac@2016',
           'name': 'bruno',
           'email': 'bruno@bruno.com',
           'birthdate': '01-01-2000',
@@ -97,7 +97,7 @@
         const defaultUserUpdated = {
           'id': 1,
           'username': 'adminUpdated',
-          'password': '123',
+          'password': 'S3nac@2016',
           'name': 'admin',
           'email': 'admin@admin.com',
           'birthdate': '01-01-2000',
@@ -130,7 +130,7 @@
     describe('POST /api/users/{id}/changePassword', () => {
       const passwords = {
         old: defaultUser.password,
-        new: '1234'
+        new: 'Senac@2016'
       };
 
       it('should change the user password', done => {
@@ -149,7 +149,7 @@
       const user2 = {
         'id': 2,
         'username': 'user2',
-        'password': '123',
+        'password': 'S3nac@2016',
         'name': 'user2',
         'email': 'user2@user2.com',
         'birthdate': '01-01-2000',
@@ -234,7 +234,7 @@
       const user2 = {
         'id': 2,
         'username': 'user2',
-        'password': '123',
+        'password': 'S3nac@2016',
         'name': 'user2',
         'email': 'user2@user2.com',
         'birthdate': '01-01-2000',

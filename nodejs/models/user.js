@@ -1,7 +1,20 @@
 'use strict';
 import md5 from 'md5';
+import { ValidationError } from 'sequelize';
 
 module.exports = (sequelize, DataTypes) => {
+  const validatePassword = user => {
+    const pattern = new RegExp(/(?=.{6,})(?=.*?[^\w\s])(?=.*?[0-9])(?=.*?[A-Z]).*?[a-z].*/g);
+
+    if (pattern.test(user.password)) {
+      return user.set('password', md5(user.password));
+    }
+
+    return sequelize.Promise.reject(new ValidationError(`A senha ter no mínimo 6 caracteres e
+      deve conter letras maiúsculas e minúsculas,
+      números e caracteres especiais`));
+  };
+
   const User = sequelize.define('users', {
     username: {
       type: DataTypes.STRING,
@@ -60,7 +73,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     hooks: {
-      beforeCreate: user => user.set('password', md5(user.password))
+      beforeCreate: user => validatePassword(user),
+      beforeUpdate: user => validatePassword(user)
     }
   },{
     classMethods: {

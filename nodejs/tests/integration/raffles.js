@@ -6,7 +6,7 @@ describe('Raffles', () => {
   const defaultUser = {
     'id': 1,
     'username': 'admin',
-    'password': '123',
+    'password': 'S3nac@2016',
     'name': 'admin',
     'email': 'admin@admin.com',
     'birthdate': '01-01-2000',
@@ -16,7 +16,7 @@ describe('Raffles', () => {
   const user2 = {
     'id': 2,
     'username': 'bruno',
-    'password': '123',
+    'password': 'S3nac@2016',
     'name': 'bruno',
     'email': 'bruno@bruno.com',
     'birthdate': '01-01-2000',

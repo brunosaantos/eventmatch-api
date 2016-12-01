@@ -67,10 +67,6 @@ class UsersController {
       data.birthdate = new Date(data.birthdate);
     }
 
-    if (data.password) {
-      data.password = md5(data.password);
-    }
-
     return this.Users
       .update(data, {where: {id: params.id}})
       .then(user => defaultResponse(user))
@@ -93,15 +89,15 @@ class UsersController {
       .find({where: {id:params.id}})
       .then(user => {
         let oldPassword = md5(data.old);
-        let newPassword = md5(data.new);
 
         if(user.dataValues.password !== oldPassword) {
           return next(new restify.UnauthorizedError('Senha atual incorreta'));
         }
 
         return user
-          .update({password: newPassword})
-          .then(user => defaultResponse(user));
+          .update({password: data.new})
+          .then(user => defaultResponse(user))
+          .catch(error => errorResponse(error.errors, 400));
       })
       .catch(error => errorResponse(error.errors, 400));
   }
