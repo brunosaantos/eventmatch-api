@@ -39,26 +39,28 @@ describe('Raffles', () => {
   let token = null;
 
   before(done => {
-    Users
-      .destroy({ where: {} })
-      .then(() => Users.create(defaultUser))
-      .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
-      .then(res => token = res.body.token)
-      .then(() => Users.create(user2))
-      .then(() => {
-        Events
-          .destroy({where: {}})
-          .then(() => {
-            return Events.create(defaultEvent)
-              .then(event => {
-                event.addUsers(1, {admin: true});
-                event.addUsers(2, {admin: false});
+    app.datasource.sequelize.sync().then(() => {
+      Users
+        .destroy({ where: {} })
+        .then(() => Users.create(defaultUser))
+        .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
+        .then(res => token = res.body.token)
+        .then(() => Users.create(user2))
+        .then(() => {
+          Events
+            .destroy({where: {}})
+            .then(() => {
+              return Events.create(defaultEvent)
+                .then(event => {
+                  event.addUsers(1, {admin: true});
+                  event.addUsers(2, {admin: false});
 
-                return event;
-              })
-              .then(() => done());
-          });
-      });
+                  return event;
+                })
+                .then(() => done());
+            });
+        });
+    });
   });
 
   beforeEach(done => {

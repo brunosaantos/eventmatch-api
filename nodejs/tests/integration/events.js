@@ -24,21 +24,22 @@ describe('Events', () => {
   let token = null;
 
   beforeEach(done => {
-    Users
-      .destroy({ where: {} })
-      .then(() => Users.create(defaultUser))
-      .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
-      .then(res => token = res.body.token)
-      .then(() => {
-        Events
-          .destroy({where: {}})
-          .then(() => {
-            return Events.create(defaultEvent)
-              .then(event => event.addUsers(1, {admin: true}))
-              .then(() => done());
-          });
-      });
-
+    app.datasource.sequelize.sync().then(() => {
+      Users
+        .destroy({ where: {} })
+        .then(() => Users.create(defaultUser))
+        .then(() => request.post('/api/login').send({username: defaultUser.username, password: defaultUser.password}))
+        .then(res => token = res.body.token)
+        .then(() => {
+          Events
+            .destroy({where: {}})
+            .then(() => {
+              return Events.create(defaultEvent)
+                .then(event => event.addUsers(1, {admin: true}))
+                .then(() => done());
+            });
+        });
+    });
   });
 
   describe('GET /events', () => {
