@@ -1,9 +1,10 @@
 let env = process.env.NODE_ENV || 'dev';
 env = env.trim();
 
-let username = (env == 'prod') ? 'bruno' : 'root';
-let password = (env == 'prod') ? 'senac' : '';
-let host = (env == 'prod') ? 'database' : 'localhost';
+const username = process.env.EM_DB_USERNAME || 'root';
+const password = process.env.EM_DB_PASSWORD || '';
+const host     = process.env.EM_DB_HOST || 'localhost';
+const port     = process.env.EM_DB_PORT || 3306;
 
 export const database = {
   database: `eventmatch_${env}`,
