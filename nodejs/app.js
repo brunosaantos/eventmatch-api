@@ -43,17 +43,3 @@ EventsRouter(app);
 app.port = 3030;
 export default app;
 
-// Creating Tables or Initiating Connections
-// db
-//   .sequelize
-//   .sync({force: false})
-//   .then(() => {
-//     // devSeeds(db);
-//     // Listening in 3030 Port
-//     // app.listen(3030);
-//   });
-
-// export default {
-//   app,
-//   db
-// };

@@ -56,7 +56,6 @@ class UsersController {
         return defaultResponse(user, 201);
       })
       .catch(error => {
-        console.log(error);
         return errorResponse(error.errors, 422);
       });
   }

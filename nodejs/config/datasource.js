@@ -22,16 +22,15 @@ const loadModels = (sequelize) => {
   return models;
 };
 
-export default function (app) {
+export default (app) => {
   if (!database) {
     const config = app.config;
-
     const sequelize = new Sequelize(
-        config.database.database,
-        config.database.username,
-        config.database.password,
-        config.database.params
-      );
+      config.database.database,
+      config.database.username,
+      config.database.password,
+      config.database.params
+    );
 
     database = {
       sequelize,
@@ -40,9 +39,7 @@ export default function (app) {
     };
 
     database.models = loadModels(sequelize);
-
-    // sequelize.sync({force:true}).done(() => database);
-    sequelize.sync().done(() => database);
   }
+
   return database;
-}
+};
