@@ -24,10 +24,6 @@ services:
       - "./mysql:/var/lib/mysql"
     networks:
       - nodejs
-    environment:
-      DB_NAME: eventmatch_prod
-      DB_PASS: senac
-      DB_USER: bruno
 
 networks:
   nodejs:
