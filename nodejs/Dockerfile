@@ -20,6 +20,4 @@ USER root
 COPY . $HOME/api
 RUN chown -R app:app $HOME/*
 
-USER app
-
 CMD ["npm", "start"]
