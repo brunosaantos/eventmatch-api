@@ -13,6 +13,13 @@ services:
     volumes:
       - ./nodejs:/home/app/api
       - /home/app/api/node_modules
+    environment:
+      - EM_DB_USER=${EM_DB_USER}
+      - EM_DB_PASS=${EM_DB_PASS}
+      - EM_DB_HOST=${EM_DB_HOST}
+      - EM_LOGGLY_TOKEN=${EM_LOGGLY_TOKEN}
+      - EM_LOGGLY_SUBDOMAIN=${EM_LOGGLY_SUBDOMAIN}
+      - EM_LOG_LEVEL=${EM_LOG_LEVEL}
     networks:
       - nodejs
 
