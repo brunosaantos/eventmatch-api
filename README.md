@@ -1,6 +1,6 @@
 # Eventmatch API
 
-[![Build Status](https://snap-ci.com/brunosaantos/eventmatch-api/branch/master/build_image)](https://snap-ci.com/brunosaantos/eventmatch-api/branch/master)
+[![Build Status](https://travis-ci.org/brunosaantos/eventmatch-api.svg?branch=master)](https://travis-ci.org/brunosaantos/eventmatch-api)
 
 API desenvolvida durante o TCC do curso de Análise e desenvolvimento de sistemas.
 
